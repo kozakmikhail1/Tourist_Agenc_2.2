@@ -212,4 +212,5 @@ jobs:
         args: >
           -Dproject.settings=.github/sonar-project.properties
           -Dsonar.cfamily.compile-commands=compile_commands.json
+          -Dsonar.ci=true
 
