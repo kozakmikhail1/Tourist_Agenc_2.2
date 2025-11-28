@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TourDialog</class>
+ <widget class="QDialog" name="TourDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Создание тура</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="nameLabel">
+       <property name="text">
+        <string>Название:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="nameEdit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="countryLabel">
+       <property name="text">
+        <string>Страна:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="countryCombo"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="startDateLabel">
+       <property name="text">
+        <string>Дата начала:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QDateEdit" name="startDateEdit">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="endDateLabel">
+       <property name="text">
+        <string>Дата окончания:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDateEdit" name="endDateEdit">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="hotelLabel">
+       <property name="text">
+        <string>Отель:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="hotelCombo"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="roomLabel">
+       <property name="text">
+        <string>Номер в отеле:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="roomCombo"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="transportLabel">
+       <property name="text">
+        <string>Транспортная компания:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="transportCombo"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="scheduleLabel">
+       <property name="text">
+        <string>Рейс:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QComboBox" name="scheduleCombo"/>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="costLabel">
+       <property name="text">
+        <string>Стоимость:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QLabel" name="costValueLabel">
+       <property name="text">
+        <string>0.00</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+

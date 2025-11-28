@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BookTourDialog</class>
+ <widget class="QDialog" name="BookTourDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>650</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Бронирование тура</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="titleLabel">
+     <property name="text">
+      <string>Заполните данные для бронирования тура</string>
+     </property>
+     <property name="styleSheet">
+      <string>font-size: 11pt; font-weight: bold;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="modeGroupBox">
+     <property name="title">
+      <string>Режим бронирования</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QRadioButton" name="selectTourRadio">
+        <property name="text">
+         <string>Выбрать готовый тур</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="createTourRadio">
+        <property name="text">
+         <string>Создать свой тур</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="selectTourWidget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QFormLayout" name="formLayoutSelect">
+        <item row="0" column="0">
+         <widget class="QLabel" name="tourLabel">
+          <property name="text">
+           <string>Выберите тур:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="tourCombo"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="clientNameLabelSelect">
+          <property name="text">
+           <string>Ваше имя:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="clientNameEditSelect">
+          <property name="placeholderText">
+           <string>Ваше имя</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="phoneLabelSelect">
+          <property name="text">
+           <string>Телефон:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="clientPhoneEditSelect">
+          <property name="placeholderText">
+           <string>+375-XX-XXX-XX-XX</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="emailLabelSelect">
+          <property name="text">
+           <string>Email:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="clientEmailEditSelect">
+          <property name="placeholderText">
+           <string>example@email.com</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="costLabelSelect">
+          <property name="text">
+           <string>Стоимость:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="costValueLabelSelect">
+          <property name="text">
+           <string>0.00 руб</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::RichText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="createTourWidget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>8</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>10</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="step1Label">
+          <property name="text">
+           <string>Шаг 1: Выберите страну:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="countryCombo"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="step2Label">
+          <property name="text">
+           <string>Шаг 2: Выберите способ транспорта:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="transportCombo"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="scheduleLabel">
+          <property name="text">
+           <string>Рейс:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="scheduleCombo"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="step3Label">
+          <property name="text">
+           <string>Шаг 3: Выберите отель:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="hotelCombo"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="roomLabel">
+          <property name="text">
+           <string>Номер:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QComboBox" name="roomCombo"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="step4Label">
+          <property name="text">
+           <string>Шаг 4: Даты поездки:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="datesLayout">
+          <item>
+           <widget class="QDateEdit" name="startDateEdit">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="dateSeparator">
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="endDateEdit">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="step5Label">
+          <property name="text">
+           <string>Шаг 5: Ваши данные:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="clientNameEdit">
+          <property name="placeholderText">
+           <string>Ваше имя</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="phoneLabel">
+          <property name="text">
+           <string>Телефон:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QLineEdit" name="clientPhoneEdit">
+          <property name="placeholderText">
+           <string>+375-XX-XXX-XX-XX</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="emailLabel">
+          <property name="text">
+           <string>Email:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QLineEdit" name="clientEmailEdit">
+          <property name="placeholderText">
+           <string>example@email.com</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="costLabel">
+          <property name="text">
+           <string>Итого к оплате:</string>
+          </property>
+          <property name="styleSheet">
+           <string>font-weight: bold; font-size: 11pt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QLabel" name="costValueLabel">
+          <property name="text">
+           <string>0.00 руб</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::RichText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+

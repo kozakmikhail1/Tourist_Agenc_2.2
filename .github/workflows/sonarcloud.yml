@@ -1,0 +1,215 @@
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:  # Позволяет запускать вручную
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Analysis
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for better analysis
+        
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+      
+    - name: Setup MSVC Environment
+      id: setup-msvc
+      run: |
+        Write-Host "Setting up MSVC environment..."
+        # Находим Visual Studio через vswhere
+        $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+        if (Test-Path $vswhere) {
+          $vsPath = & $vswhere -latest -property installationPath
+          Write-Host "✓ Found Visual Studio at: $vsPath"
+        } else {
+          Write-Host "⚠ vswhere not found, trying default paths..."
+          $vsPath = "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise"
+          if (-not (Test-Path $vsPath)) {
+            $vsPath = "${env:ProgramFiles}\Microsoft Visual Studio\2022\Community"
+          }
+        }
+        
+        if ($vsPath -and (Test-Path $vsPath)) {
+          $vcvarsPath = Join-Path $vsPath "VC\Auxiliary\Build\vcvars64.bat"
+          if (Test-Path $vcvarsPath) {
+            Write-Host "✓ Found vcvars64.bat at: $vcvarsPath"
+            # Запускаем vcvars и получаем переменные окружения
+            $envVars = cmd /c "`"$vcvarsPath`" >nul 2>&1 && set"
+            $includePath = ""
+            $libPath = ""
+            $pathValue = $env:PATH
+            
+            $envVars | ForEach-Object {
+              if ($_ -match "^INCLUDE=(.*)$") {
+                $includePath = $matches[1]
+                Write-Host "Found INCLUDE: $includePath"
+                echo "INCLUDE=$includePath" >> $env:GITHUB_ENV
+              }
+              if ($_ -match "^LIB=(.*)$") {
+                $libPath = $matches[1]
+                Write-Host "Found LIB: $libPath"
+                echo "LIB=$libPath" >> $env:GITHUB_ENV
+              }
+              if ($_ -match "^PATH=(.*)$") {
+                $pathValue = $matches[1]
+              }
+            }
+            
+            # Обновляем PATH
+            echo "PATH=$pathValue" >> $env:GITHUB_ENV
+            Write-Host "✓ MSVC environment variables set"
+          } else {
+            Write-Host "⚠ vcvars64.bat not found at: $vcvarsPath"
+          }
+        } else {
+          Write-Host "⚠ Visual Studio not found"
+        }
+        
+    - name: Generate compile_commands.json
+      run: |
+        Write-Host "Generating compile_commands.json for C++ analysis..."
+        
+        # Получаем все .cpp файлы
+        $cppFiles = Get-ChildItem -Recurse -Filter "*.cpp" -Path "src" -ErrorAction SilentlyContinue
+        if (-not $cppFiles) {
+          Write-Host "✗ No .cpp files found in src/"
+          exit 1
+        }
+        
+        $buildDir = (Resolve-Path ".").Path.Replace("\", "/")
+        Write-Host "Build directory: $buildDir"
+        Write-Host "Found $($cppFiles.Count) .cpp files"
+        
+        # Проверяем доступность компилятора
+        $clPath = "cl.exe"
+        try {
+          $clInfo = Get-Command cl.exe -ErrorAction Stop
+          Write-Host "✓ Found compiler: $($clInfo.Source)"
+        } catch {
+          Write-Host "⚠ cl.exe not found in PATH, will use generic command"
+        }
+        
+        # Создаем JSON массив вручную с правильным экранированием
+        $jsonLines = New-Object System.Collections.ArrayList
+        [void]$jsonLines.Add("[")
+        
+        for ($i = 0; $i -lt $cppFiles.Count; $i++) {
+          $file = $cppFiles[$i]
+          $fullPath = $file.FullName.Replace("\", "/")
+          
+          # Создаем команду компиляции - упрощенный формат для SonarCloud
+          $includePath1 = "$buildDir/include"
+          $includePath2 = "$buildDir/src"
+          
+          # Формируем команду - используем правильный формат для MSVC
+          # Экранируем кавычки и обратные слеши для JSON
+          $commandParts = @(
+            "cl.exe",
+            "/c",
+            "/std:c++17",
+            "/I`"$includePath1`"",
+            "/I`"$includePath2`"",
+            "`"$fullPath`""
+          )
+          $commandStr = $commandParts -join " "
+          
+          # Экранируем для JSON: кавычки и обратные слеши
+          $commandEscaped = $commandStr.Replace('\', '\\').Replace('"', '\"')
+          
+          [void]$jsonLines.Add("  {")
+          [void]$jsonLines.Add("    `"directory`": `"$buildDir`",")
+          [void]$jsonLines.Add("    `"command`": `"$commandEscaped`",")
+          [void]$jsonLines.Add("    `"file`": `"$fullPath`"")
+          
+          if ($i -lt $cppFiles.Count - 1) {
+            [void]$jsonLines.Add("  },")
+          } else {
+            [void]$jsonLines.Add("  }")
+          }
+        }
+        
+        [void]$jsonLines.Add("]")
+        
+        # Записываем в файл
+        $jsonLines -join "`n" | Out-File -FilePath "compile_commands.json" -Encoding UTF8 -NoNewline
+        Write-Host "✓ Created compile_commands.json"
+        
+        # Показываем пример команды для отладки
+        Write-Host "`nExample command from first entry:"
+        Get-Content "compile_commands.json" -TotalCount 6 | Select-Object -Last 4
+        
+        # Проверяем валидность
+        try {
+          $content = Get-Content "compile_commands.json" -Raw
+          $json = $content | ConvertFrom-Json
+          Write-Host "✓ Valid JSON with $($json.Count) entries"
+        } catch {
+          Write-Host "✗ Invalid JSON: $_"
+          Write-Host "First 10 lines:"
+          Get-Content "compile_commands.json" -TotalCount 10
+          exit 1
+        }
+        
+    - name: Verify compile_commands.json
+      run: |
+        Write-Host "Verifying compile_commands.json..."
+        if (Test-Path "compile_commands.json") {
+          $file = Get-Item "compile_commands.json"
+          Write-Host "✓ File exists: $($file.FullName)"
+          Write-Host "✓ File size: $($file.Length) bytes"
+          
+          # Показываем первые строки для проверки
+          Write-Host "`nFirst 5 lines of compile_commands.json:"
+          Get-Content "compile_commands.json" -TotalCount 5
+          
+          # Проверяем валидность JSON
+          try {
+            $content = Get-Content "compile_commands.json" -Raw
+            $json = $content | ConvertFrom-Json
+            Write-Host "✓ Valid JSON with $($json.Count) entries"
+          } catch {
+            Write-Host "✗ Invalid JSON: $_"
+            exit 1
+          }
+        } else {
+          Write-Host "✗ compile_commands.json not found"
+          Write-Host "Current directory: $(Get-Location)"
+          Write-Host "Files in current directory:"
+          Get-ChildItem | Select-Object Name | Format-Table
+          exit 1
+        }
+        
+    - name: Show sonar-project.properties config
+      run: |
+        Write-Host "Checking sonar-project.properties..."
+        if (Test-Path ".github/sonar-project.properties") {
+          Write-Host "Properties related to compile-commands:"
+          Get-Content ".github/sonar-project.properties" | Select-String "compile-commands" | Write-Host
+          Write-Host "`nFull sonar-project.properties:"
+          Get-Content ".github/sonar-project.properties"
+        } else {
+          Write-Host "✗ sonar-project.properties not found"
+          exit 1
+        }
+        
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_CFAMILY_COMPILE_COMMANDS_PATH: compile_commands.json
+      with:
+        projectBaseDir: .
+        args: >
+          -Dproject.settings=.github/sonar-project.properties
+          -Dsonar.cfamily.compile-commands=compile_commands.json
+
