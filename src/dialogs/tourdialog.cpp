@@ -16,6 +16,7 @@ TourDialog::TourDialog(QWidget *parent,
     , hotels_(hotels)
     , companies_(companies)
     , tour_(tour)
+    , tourSetupHelper_(std::make_unique<TourSetupHelper>(countries, hotels, companies, nullptr))
 {
     ui->setupUi(this);
     
@@ -83,45 +84,6 @@ TourDialog::TourDialog(QWidget *parent,
     calculateCost();
 }
 
-QString TourDialog::findCapitalForCountry(const QString& selectedCountry) const {
-    if (!countries_) {
-        return "";
-    }
-    
-    for (const auto& country : countries_->getData()) {
-        if (country.getName() == selectedCountry) {
-            return country.getCapital();
-        }
-    }
-    return "";
-}
-
-QSet<QString> TourDialog::collectCitiesForCountry(const QString& selectedCountry) const {
-    QSet<QString> cities;
-    
-    if (!hotels_) {
-        return cities;
-    }
-    
-    for (const auto& hotel : hotels_->getData()) {
-        if (hotel.getCountry() != selectedCountry) {
-            continue;
-        }
-        
-        QString address = hotel.getAddress();
-        if (address.isEmpty()) {
-            continue;
-        }
-        
-        QString city = address.split(',').first().trimmed();
-        if (!city.isEmpty()) {
-            cities.insert(city);
-        }
-        cities.insert(address);
-    }
-    
-    return cities;
-}
 
 TransportCompany* TourDialog::findSelectedTransportCompany() const {
     if (!companies_ || ui->transportCombo->currentIndex() < 0) {
@@ -129,8 +91,8 @@ TransportCompany* TourDialog::findSelectedTransportCompany() const {
     }
     
     QString selectedCountry = ui->countryCombo->currentText();
-    QSet<QString> citiesInCountry = collectCitiesForCountry(selectedCountry);
-    QString capital = findCapitalForCountry(selectedCountry);
+    QSet<QString> citiesInCountry = tourSetupHelper_->collectCitiesInCountry(selectedCountry);
+    QString capital = tourSetupHelper_->findCountryCapital(selectedCountry);
     
     if (!capital.isEmpty()) {
         citiesInCountry.insert(capital);
@@ -506,8 +468,8 @@ void TourDialog::updateTransportCombo() {
     }
     
     QString selectedCountry = ui->countryCombo->currentText();
-    QString capital = findCapitalForCountry(selectedCountry);
-    QSet<QString> citiesInCountry = collectCitiesForCountry(selectedCountry);
+    QString capital = tourSetupHelper_->findCountryCapital(selectedCountry);
+    QSet<QString> citiesInCountry = tourSetupHelper_->collectCitiesInCountry(selectedCountry);
     
     if (!capital.isEmpty()) {
         citiesInCountry.insert(capital);
@@ -567,8 +529,8 @@ void TourDialog::updateSchedulesCombo() {
     QString capital = "";
     
     if (countries_ && ui->countryCombo->currentIndex() >= 0) {
-        capital = findCapitalForCountry(selectedCountry);
-        citiesInCountry = collectCitiesForCountry(selectedCountry);
+        capital = tourSetupHelper_->findCountryCapital(selectedCountry);
+        citiesInCountry = tourSetupHelper_->collectCitiesInCountry(selectedCountry);
         
         if (!capital.isEmpty()) {
             citiesInCountry.insert(capital);

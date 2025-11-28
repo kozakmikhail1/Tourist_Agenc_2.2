@@ -18,7 +18,6 @@ public:
     ContainerIterator() : ptr_(nullptr) {}
     explicit ContainerIterator(typename QVector<T>::iterator it) : ptr_(it) {}
 
-    // Операторы итератора (перегрузка операций)
     reference operator*() const { return *ptr_; }
     pointer operator->() const { return ptr_; }
 
@@ -54,7 +53,6 @@ public:
         return *this;
     }
 
-    // Hidden friend operators for symmetric operations
     friend ContainerIterator operator+(difference_type n, const ContainerIterator& it) {
         ContainerIterator tmp = it;
         return tmp += n;
@@ -74,7 +72,6 @@ public:
         return lhs.ptr_ - rhs.ptr_;
     }
 
-    // Hidden friend comparison operators
     friend bool operator==(const ContainerIterator& lhs, const ContainerIterator& rhs) {
         return lhs.ptr_ == rhs.ptr_;
     }

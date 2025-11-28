@@ -58,6 +58,11 @@ public:
 private:
     QString dataPath_;
     
+    // Общие функции для работы с файлами
+    void openFileForWriting(QFile& file, const QString& filename) const;
+    void openFileForReading(QFile& file, const QString& filename) const;
+    void validateFileHeader(QTextStream& in, const QString& expectedHeader) const;
+    
     // Вспомогательные функции для сохранения
     void saveHotelToStream(QTextStream& out, const Hotel& hotel) const;
     void saveRoomToStream(QTextStream& out, const Room& room) const;

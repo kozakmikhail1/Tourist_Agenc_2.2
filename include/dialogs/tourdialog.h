@@ -8,6 +8,7 @@
 #include "models/transportcompany.h"
 #include "containers/datacontainer.h"
 #include "models/country.h"
+#include "dialogs/toursetuphelper.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TourDialog; }
@@ -42,6 +43,7 @@ private:
     DataContainer<Hotel>* hotels_;
     DataContainer<TransportCompany>* companies_;
     Tour* tour_;
+    std::unique_ptr<TourSetupHelper> tourSetupHelper_;
     
     void updateHotelsCombo();
     void updateRoomsCombo();
@@ -51,8 +53,6 @@ private:
     // Вспомогательные функции для calculateCost
     double calculateTransportCost() const;
     double calculateHotelCost() const;
-    QSet<QString> collectCitiesForCountry(const QString& selectedCountry) const;
-    QString findCapitalForCountry(const QString& selectedCountry) const;
     TransportCompany* findSelectedTransportCompany() const;
     
     // Вспомогательные функции для getTour

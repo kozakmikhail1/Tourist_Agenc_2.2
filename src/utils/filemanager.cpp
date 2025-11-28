@@ -16,14 +16,33 @@ FileManager::FileManager() {
     }
 }
 
-void FileManager::saveCountries(const DataContainer<Country>& countries, const QString& filename) const {
-    QFile file(filename);
+void FileManager::openFileForWriting(QFile& file, const QString& filename) const {
+    file.setFileName(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         throw FileException(QString("Cannot open file for writing: %1").arg(filename));
     }
+}
 
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Encoding::Utf8);
+void FileManager::openFileForReading(QFile& file, const QString& filename) const {
+    file.setFileName(filename);
+    if (!file.exists()) {
+        qWarning() << "File does not exist:" << filename;
+        throw FileException(QString("File does not exist: %1").arg(filename));
+    }
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        throw FileException(QString("Cannot open file for reading: %1").arg(filename));
+    }
+}
+
+void FileManager::validateFileHeader(QTextStream& in, const QString& expectedHeader) const {
+    QString header = in.readLine();
+    if (header != expectedHeader) {
+        throw FileException("Invalid file format");
+    }
+}
+
+void FileManager::saveCountries(const DataContainer<Country>& countries, const QString& filename) const {
+    QTextStream out = openFileForWriting(filename);
 
     out << "COUNTRIES\n";
     out << countries.size() << "\n";
@@ -37,23 +56,8 @@ void FileManager::saveCountries(const DataContainer<Country>& countries, const Q
 }
 
 void FileManager::loadCountries(DataContainer<Country>& countries, const QString& filename) const {
-    QFile file(filename);
-    if (!file.exists()) {
-        qWarning() << "File does not exist:" << filename;
-        return;
-    }
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for reading: %1").arg(filename));
-    }
-
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Encoding::Utf8);
-
-    QString header = in.readLine();
-    if (header != "COUNTRIES") {
-        throw FileException("Invalid file format");
-    }
+    QTextStream in = openFileForReading(filename);
+    validateFileHeader(in, "COUNTRIES");
 
     int count = in.readLine().toInt();
     if (count <= 0) {
@@ -84,13 +88,7 @@ void FileManager::loadCountries(DataContainer<Country>& countries, const QString
 }
 
 void FileManager::saveHotels(const DataContainer<Hotel>& hotels, const QString& filename) const {
-    QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for writing: %1").arg(filename));
-    }
-
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Encoding::Utf8);
+    QTextStream out = openFileForWriting(filename);
 
     out << "HOTELS\n";
     out << hotels.size() << "\n";
@@ -101,23 +99,8 @@ void FileManager::saveHotels(const DataContainer<Hotel>& hotels, const QString& 
 }
 
 void FileManager::loadHotels(DataContainer<Hotel>& hotels, const QString& filename) const {
-    QFile file(filename);
-    if (!file.exists()) {
-        qWarning() << "File does not exist:" << filename;
-        return;
-    }
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for reading: %1").arg(filename));
-    }
-
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Encoding::Utf8);
-
-    QString header = in.readLine();
-    if (header != "HOTELS") {
-        throw FileException("Invalid file format");
-    }
+    QTextStream in = openFileForReading(filename);
+    validateFileHeader(in, "HOTELS");
 
     int count = in.readLine().toInt();
     hotels.clear();
@@ -178,13 +161,7 @@ void FileManager::loadHotels(DataContainer<Hotel>& hotels, const QString& filena
 }
 
 void FileManager::saveTransportCompanies(const DataContainer<TransportCompany>& companies, const QString& filename) const {
-    QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for writing: %1").arg(filename));
-    }
-
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Encoding::Utf8);
+    QTextStream out = openFileForWriting(filename);
 
     out << "TRANSPORT_COMPANIES\n";
     out << companies.size() << "\n";
@@ -195,23 +172,8 @@ void FileManager::saveTransportCompanies(const DataContainer<TransportCompany>& 
 }
 
 void FileManager::loadTransportCompanies(DataContainer<TransportCompany>& companies, const QString& filename) const {
-    QFile file(filename);
-    if (!file.exists()) {
-        qWarning() << "File does not exist:" << filename;
-        return;
-    }
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for reading: %1").arg(filename));
-    }
-
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Encoding::Utf8);
-
-    QString header = in.readLine();
-    if (header != "TRANSPORT_COMPANIES") {
-        throw FileException("Invalid file format");
-    }
+    QTextStream in = openFileForReading(filename);
+    validateFileHeader(in, "TRANSPORT_COMPANIES");
 
     int count = in.readLine().toInt();
     companies.clear();
@@ -224,13 +186,7 @@ void FileManager::loadTransportCompanies(DataContainer<TransportCompany>& compan
 }
 
 void FileManager::saveTours(const DataContainer<Tour>& tours, const QString& filename) const {
-    QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for writing: %1").arg(filename));
-    }
-
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Encoding::Utf8);
+    QTextStream out = openFileForWriting(filename);
 
     out << "TOURS\n";
     out << tours.size() << "\n";
@@ -253,23 +209,8 @@ void FileManager::saveTours(const DataContainer<Tour>& tours, const QString& fil
 }
 
 void FileManager::loadTours(DataContainer<Tour>& tours, const QString& filename) const {
-    QFile file(filename);
-    if (!file.exists()) {
-        qWarning() << "File does not exist:" << filename;
-        return;
-    }
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for reading: %1").arg(filename));
-    }
-
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Encoding::Utf8);
-
-    QString header = in.readLine();
-    if (header != "TOURS") {
-        throw FileException("Invalid file format");
-    }
+    QTextStream in = openFileForReading(filename);
+    validateFileHeader(in, "TOURS");
 
     int count = in.readLine().toInt();
     tours.clear();
@@ -326,13 +267,7 @@ void FileManager::loadTours(DataContainer<Tour>& tours, const QString& filename)
 }
 
 void FileManager::saveOrders(const DataContainer<Order>& orders, const QString& filename) const {
-    QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for writing: %1").arg(filename));
-    }
-
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Encoding::Utf8);
+    QTextStream out = openFileForWriting(filename);
 
     out << "ORDERS\n";
     out << orders.size() << "\n";
@@ -367,24 +302,8 @@ void FileManager::saveOrders(const DataContainer<Order>& orders, const QString& 
 }
 
 void FileManager::loadOrders(DataContainer<Order>& orders, const QString& filename) const {
-    QFile file(filename);
-    QString absolutePath = QFileInfo(filename).absoluteFilePath();
-    if (!file.exists()) {
-        qWarning() << "File does not exist:" << absolutePath;
-        return;
-    }
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw FileException(QString("Cannot open file for reading: %1").arg(absolutePath));
-    }
-
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Encoding::Utf8);
-
-    QString header = in.readLine();
-    if (header != "ORDERS") {
-        throw FileException("Invalid file format");
-    }
+    QTextStream in = openFileForReading(filename);
+    validateFileHeader(in, "ORDERS");
 
     int count = in.readLine().toInt();
     orders.clear();

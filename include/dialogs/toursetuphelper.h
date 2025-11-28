@@ -37,6 +37,10 @@ public:
                            QComboBox* countryCombo,
                            QComboBox* transportCombo,
                            QComboBox* scheduleCombo) const;
+    
+    // Публичные методы для использования в других классах
+    QString findCountryCapital(const QString& selectedCountry) const;
+    QSet<QString> collectCitiesInCountry(const QString& selectedCountry) const;
 
 private:
     DataContainer<Country>* countries_;
@@ -46,8 +50,6 @@ private:
     
     TransportCompany* findSelectedTransportCompany(QComboBox* countryCombo,
                                                    QComboBox* transportCombo) const;
-    QString findCountryCapital(const QString& selectedCountry) const;
-    QSet<QString> collectCitiesInCountry(const QString& selectedCountry) const;
     void findAndSetSchedule(QComboBox* scheduleCombo, TransportCompany* company,
                            const TransportSchedule& schedule, int scheduleIndex) const;
     int findScheduleComboIndex(QComboBox* scheduleCombo, int scheduleIndex) const;
