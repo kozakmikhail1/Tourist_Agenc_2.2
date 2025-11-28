@@ -1,0 +1,509 @@
+@startuml
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classIconSize 0
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam direction top to bottom
+skinparam arrow {
+    Thickness 2
+    HeadSize 6
+    HeadStyle 3
+}
+skinparam nodesep 50
+skinparam ranksep 70
+skinparam packagePadding 15
+skinparam packageStyle rectangle
+skinparam roundcorner 0
+skinparam minlen 3
+skinparam sameClassWidth true
+skinparam maxMessageSize 80
+skinparam wrapWidth 150
+skinparam classFontSize 8
+skinparam defaultFontSize 8
+skinparam class {
+    BackgroundColor transparent
+    ArrowColor black
+    BorderColor black
+    BorderThickness 2
+    Padding 2
+    FontSize 8
+    FontStyle bold
+}
+skinparam package {
+    BackgroundColor transparent
+    BorderColor black
+    BorderThickness 2
+    Padding 3
+    FontSize 9
+    FontStyle bold
+}
+skinparam backgroundColor transparent
+skinparam defaultFontName Arial
+skinparam monochrome false
+
+package "Models" {
+    abstract class TouristService {
+        -QString name_
+        -double price_
+        +TouristService(name: QString, price: double)
+        +getName() : QString
+        +setName(name: QString)
+        +getPrice() : double
+        +setPrice(price: double)
+        +{abstract} getType() : QString
+        +{abstract} getDescription() : QString
+        +calculateCost() : double
+        +writeToStream(os: ostream&)
+        +readFromStream(is: istream&)
+    }
+    
+    class Country {
+        -QString continent_
+        -QString capital_
+        -QString currency_
+        +Country(name: QString, continent: QString)
+        +getContinent() : QString
+        +setContinent(continent: QString)
+        +getCapital() : QString
+        +setCapital(capital: QString)
+        +getCurrency() : QString
+        +setCurrency(currency: QString)
+        +operator=(other: Country&) : Country&
+        +operator==(other: Country&) : bool
+        +operator!=(other: Country&) : bool
+        +operator<<(os: ostream&, country: Country&)
+        +operator>>(is: istream&, country: Country&)
+    }
+    
+    class Room {
+        -RoomType roomType_
+        -int capacity_
+        -double pricePerNight_
+        +Room(name: QString, type: RoomType, pricePerNight: double, capacity: int)
+        +getRoomType() : RoomType
+        +setRoomType(type: RoomType)
+        +getCapacity() : int
+        +setCapacity(capacity: int)
+        +getPricePerNight() : double
+        +setPricePerNight(price: double)
+        +{static} roomTypeToString(type: RoomType) : QString
+        +{static} stringToRoomType(str: QString) : RoomType
+    }
+    
+    class Hotel {
+        -QString country_
+        -int stars_
+        -QString address_
+        -QVector<Room> rooms_
+        +Hotel(name: QString, country: QString, stars: int, address: QString)
+        +getCountry() : QString
+        +setCountry(country: QString)
+        +getStars() : int
+        +setStars(stars: int)
+        +getAddress() : QString
+        +setAddress(address: QString)
+        +addRoom(room: Room&)
+        +removeRoom(index: int)
+        +getRooms() : QVector<Room>
+        +getRoom(index: int) : Room*
+        +getRoom(index: int) : const Room*
+        +getRoomCount() : int
+    }
+    
+    struct TransportSchedule {
+        +QString departureCity
+        +QString arrivalCity
+        +QDate departureDate
+        +QDate arrivalDate
+        +double price
+        +int availableSeats
+    }
+    
+    class TransportCompany {
+        -TransportType transportType_
+        -QVector<TransportSchedule> schedules_
+        +TransportCompany(name: QString, type: TransportType)
+        +getTransportType() : TransportType
+        +setTransportType(type: TransportType)
+        +addSchedule(schedule: TransportSchedule&)
+        +removeSchedule(index: int)
+        +getSchedules() : QVector<TransportSchedule>
+        +getSchedule(index: int) : TransportSchedule*
+        +getScheduleCount() : int
+        +{static} transportTypeToString(type: TransportType) : QString
+        +{static} stringToTransportType(str: QString) : TransportType
+    }
+    
+    class Tour {
+        -QString country_
+        -QDate startDate_
+        -QDate endDate_
+        -Hotel hotel_
+        -TransportCompany transportCompany_
+        -TransportSchedule transportSchedule_
+        +Tour(name: QString, country: QString, startDate: QDate, endDate: QDate)
+        +getCountry() : QString
+        +setCountry(country: QString)
+        +getStartDate() : QDate
+        +setStartDate(date: QDate)
+        +getEndDate() : QDate
+        +setEndDate(date: QDate)
+        +getDuration() : int
+        +setHotel(hotel: Hotel&)
+        +getHotel() : Hotel
+        +getHotelPtr() : Hotel*
+        +setTransportCompany(company: TransportCompany&)
+        +getTransportCompany() : TransportCompany
+        +getTransportCompanyPtr() : TransportCompany*
+        +setTransportSchedule(schedule: TransportSchedule&)
+        +getTransportSchedule() : TransportSchedule
+    }
+    
+    class Order {
+        -{static} int nextId_
+        -int id_
+        -Tour tour_
+        -QString clientName_
+        -QString clientPhone_
+        -QString clientEmail_
+        -QDateTime orderDate_
+        -QString status_
+        +Order()
+        +Order(tour: Tour&, clientName: QString, clientPhone: QString, clientEmail: QString)
+        +getId() : int
+        +getTour() : Tour
+        +setTour(tour: Tour&)
+        +getClientName() : QString
+        +setClientName(name: QString)
+        +getClientPhone() : QString
+        +setClientPhone(phone: QString)
+        +getClientEmail() : QString
+        +setClientEmail(email: QString)
+        +getOrderDate() : QDateTime
+        +setOrderDate(date: QDateTime)
+        +getTotalCost() : double
+        +getStatus() : QString
+        +setStatus(status: QString)
+        +toString() : QString
+        +operator==(other: Order&) : bool
+        +operator!=(other: Order&) : bool
+        +operator<(other: Order&) : bool
+        +operator<<(os: ostream&, order: Order&)
+        +operator>>(is: istream&, order: Order&)
+    }
+    
+    TouristService <|-- Country
+    TouristService <|-- Room
+    TouristService <|-- Hotel
+    TouristService <|-- TransportCompany
+    TouristService <|-- Tour
+    
+    Hotel "1" *-- "0..*" Room : contains
+    TransportCompany "1" *-- "0..*" TransportSchedule : contains
+    Tour "1" *-- "1" Hotel : contains
+    Tour "1" *-- "1" TransportCompany : contains
+    Tour "1" *-- "1" TransportSchedule : contains
+    Order "1" *-- "1" Tour : contains
+}
+
+package "Containers" {
+    class "DataContainer<T>" {
+        -QVector<T> data_
+        +DataContainer()
+        +add(item: T&)
+        +remove(index: int)
+        +remove(item: T&)
+        +get(index: int) : T*
+        +get(index: int) : const T*
+        +size() : int
+        +isEmpty() : bool
+        +clear()
+        +begin() : Iterator
+        +end() : Iterator
+        +cbegin() : ConstIterator
+        +cend() : ConstIterator
+        +findIf(pred: Predicate) : Iterator
+        +findIf(pred: Predicate) : ConstIterator
+        +removeIf(pred: Predicate) : bool
+        +getData() : QVector<T>&
+        +getData() : const QVector<T>&
+    }
+
+    class "ContainerIterator<T>" {
+        -QVector<T>::iterator ptr_
+        +ContainerIterator()
+        +ContainerIterator(it: QVector<T>::iterator)
+        +operator*() : T&
+        +operator->() : T*
+        +operator++() : ContainerIterator&
+        +operator++(int) : ContainerIterator
+        +operator--() : ContainerIterator&
+        +operator--(int) : ContainerIterator
+        +operator+=(n: int) : ContainerIterator&
+        +operator-=(n: int) : ContainerIterator&
+        +operator+(n: int) : ContainerIterator
+        +operator-(n: int) : ContainerIterator
+        +operator-(other: ContainerIterator&) : difference_type
+        +operator==(other: ContainerIterator&) : bool
+        +operator!=(other: ContainerIterator&) : bool
+        +operator<(other: ContainerIterator&) : bool
+        +operator>(other: ContainerIterator&) : bool
+        +operator<=(other: ContainerIterator&) : bool
+        +operator>=(other: ContainerIterator&) : bool
+    }
+
+    "DataContainer<T>" ..> "ContainerIterator<T>" : uses
+}
+
+package "Utils" {
+    class FileException {
+        -string message_
+        +FileException(message: QString)
+        +what() : const char*
+    }
+    
+    class FileManager {
+        -QString dataPath_
+        +FileManager()
+        +saveCountries(countries: DataContainer<Country>&, filename: QString)
+        +saveHotels(hotels: DataContainer<Hotel>&, filename: QString)
+        +saveTransportCompanies(companies: DataContainer<TransportCompany>&, filename: QString)
+        +saveTours(tours: DataContainer<Tour>&, filename: QString)
+        +saveOrders(orders: DataContainer<Order>&, filename: QString)
+        +loadCountries(countries: DataContainer<Country>&, filename: QString)
+        +loadHotels(hotels: DataContainer<Hotel>&, filename: QString)
+        +loadTransportCompanies(companies: DataContainer<TransportCompany>&, filename: QString)
+        +loadTours(tours: DataContainer<Tour>&, filename: QString)
+        +loadOrders(orders: DataContainer<Order>&, filename: QString)
+        +saveAll(...)
+        +loadAll(...)
+    }
+    
+    class StreamFileException {
+        -string message_
+        +StreamFileException(message: string)
+        +what() : const char*
+    }
+    
+    class StreamFileManager {
+        -string basePath_
+        +StreamFileManager(basePath: string)
+        +saveCountries(countries: DataContainer<Country>&, filename: string)
+        +saveOrders(orders: DataContainer<Order>&, filename: string)
+        +loadCountries(countries: DataContainer<Country>&, filename: string)
+        +loadOrders(orders: DataContainer<Order>&, filename: string)
+        +saveAll(...)
+        +loadAll(...)
+        +ensureDirectoryExists(path: string)
+    }
+    
+    class NumericSortItem {
+        -double numericValue_
+        +NumericSortItem(text: QString, numericValue: double)
+        +operator<(other: QTableWidgetItem&) : bool
+        +data(role: int) : QVariant
+    }
+    
+    FileManager ..> FileException : throws
+    FileManager ..> "DataContainer<T>" : uses
+    StreamFileManager ..> StreamFileException : throws
+    StreamFileManager ..> "DataContainer<T>" : uses
+}
+
+package "Dialogs" {
+    class CountryDialog {
+        -Ui::CountryDialog* ui
+        -Country* country_
+        +CountryDialog(parent: QWidget*, country: Country*)
+        +getCountry() : Country
+    }
+    
+    class HotelDialog {
+        -Ui::HotelDialog* ui
+        -DataContainer<Country>* countries_
+        -Hotel* hotel_
+        -QVector<Room> rooms_
+        +HotelDialog(parent: QWidget*, countries: DataContainer<Country>*, hotel: Hotel*)
+        +getHotel() : Hotel
+    }
+    
+    class TourDialog {
+        -Ui::TourDialog* ui
+        -DataContainer<Country>* countries_
+        -DataContainer<Hotel>* hotels_
+        -DataContainer<TransportCompany>* companies_
+        -Tour* tour_
+        +TourDialog(parent: QWidget*, countries: DataContainer<Country>*, hotels: DataContainer<Hotel>*, companies: DataContainer<TransportCompany>*, tour: Tour*)
+        +getTour() : Tour
+    }
+    
+    class BookTourDialog {
+        -Ui::BookTourDialog* ui
+        -DataContainer<Country>* countries_
+        -DataContainer<Hotel>* hotels_
+        -DataContainer<TransportCompany>* companies_
+        -DataContainer<Tour>* tours_
+        -bool isEditMode_
+        +BookTourDialog(parent: QWidget*, countries: DataContainer<Country>*, hotels: DataContainer<Hotel>*, companies: DataContainer<TransportCompany>*, tours: DataContainer<Tour>*)
+        +getOrder() : Order
+        +setOrder(order: Order&)
+        +setEditMode(editMode: bool)
+    }
+    
+    class SearchDialog {
+        -Ui::SearchDialog* ui
+        -DataContainer<Tour>* tours_
+        +SearchDialog(parent: QWidget*, tours: DataContainer<Tour>*)
+        +search()
+        +updateResultsTable(results: QVector<Tour>&)
+    }
+    
+    SearchDialog ..> "DataContainer<T>" : uses
+}
+
+package "MainWindow" {
+    class MainWindow {
+        -unique_ptr<Ui::MainWindow> ui
+        -DataContainer<Country> countries_
+        -DataContainer<Hotel> hotels_
+        -DataContainer<TransportCompany> transportCompanies_
+        -DataContainer<Tour> tours_
+        -DataContainer<Order> orders_
+        -FileManager fileManager_
+        -QNetworkAccessManager* networkManager_
+        -QTimer* currencyTimer_
+        -TableManager* tableManager_
+        -FilterManager* filterManager_
+        -FilterComboUpdater* filterComboUpdater_
+        -QMap<QString, Action*> actions_
+        +MainWindow(parent: QWidget*)
+        +saveData()
+        +loadData()
+        +updateCountriesTable()
+        +updateHotelsTable()
+        +updateToursTable()
+        +updateOrdersTable()
+        +linkToursWithHotelsAndTransport()
+    }
+    
+    class TableManager {
+        +TableManager()
+        +updateCountriesTable(table: QTableWidget*, countries: DataContainer<Country>&)
+        +updateHotelsTable(table: QTableWidget*, hotels: DataContainer<Hotel>&)
+        +updateTransportCompaniesTable(table: QTableWidget*, companies: DataContainer<TransportCompany>&)
+        +updateToursTable(table: QTableWidget*, tours: DataContainer<Tour>&)
+        +updateOrdersTable(table: QTableWidget*, orders: DataContainer<Order>&)
+        +getSelectedRow(table: QTableWidget*) : int
+        +getSelectedIndex(table: QTableWidget*, column: int) : int
+    }
+    
+    class FilterManager {
+        +FilterManager()
+        +applyCountriesFilters(...)
+        +applyHotelsFilters(...)
+        +applyTransportFilters(...)
+        +applyToursFilters(...)
+        +applyOrdersFilters(...)
+    }
+    
+    class FilterComboUpdater {
+        +FilterComboUpdater()
+        +updateCountriesFilterCombo(...)
+        +updateHotelsFilterCombos(...)
+        +updateTransportFilterCombo(...)
+        +updateToursFilterCombo(...)
+        +updateOrdersFilterCombo(...)
+    }
+    
+    MainWindow "1" *-- "1" TableManager
+    MainWindow "1" *-- "1" FilterManager
+    MainWindow "1" *-- "1" FilterComboUpdater
+    MainWindow "1" *-- "1" FileManager
+    MainWindow "1" *-- "0..*" Action : uses
+    MainWindow ..> "DataContainer<T>" : uses
+}
+
+package "Actions" {
+    abstract class Action {
+        +Action(parent: QObject*)
+        +{abstract} execute()
+        +undo()
+        +{abstract} description() : QString
+        +executed() : signal
+    }
+    
+    class AddCountryAction {
+        -DataContainer<Country>* countries_
+        -QTableWidget* table_
+        -QWidget* parent_
+        +AddCountryAction(countries: DataContainer<Country>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    
+    class AddHotelAction {
+        -DataContainer<Hotel>* hotels_
+        -QTableWidget* table_
+        -QWidget* parent_
+        +AddHotelAction(hotels: DataContainer<Hotel>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    
+    class AddTourAction {
+        -DataContainer<Tour>* tours_
+        -DataContainer<Country>* countries_
+        -DataContainer<Hotel>* hotels_
+        -DataContainer<TransportCompany>* companies_
+        -QTableWidget* table_
+        -QWidget* parent_
+        +AddTourAction(tours: DataContainer<Tour>*, countries: DataContainer<Country>*, hotels: DataContainer<Hotel>*, companies: DataContainer<TransportCompany>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    
+    class AddOrderAction {
+        -DataContainer<Order>* orders_
+        -DataContainer<Tour>* tours_
+        -QTableWidget* table_
+        -QWidget* parent_
+        +AddOrderAction(orders: DataContainer<Order>*, tours: DataContainer<Tour>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    
+    Action <|-- AddCountryAction
+    Action <|-- AddHotelAction
+    Action <|-- AddTourAction
+    Action <|-- AddOrderAction
+    
+    AddCountryAction ..> "DataContainer<T>" : uses
+    AddHotelAction ..> "DataContainer<T>" : uses
+    AddTourAction ..> "DataContainer<T>" : uses
+    AddOrderAction ..> "DataContainer<T>" : uses
+}
+
+MainWindow ..> "DataContainer<T>" : uses
+MainWindow ..> Country : uses
+MainWindow ..> Hotel : uses
+MainWindow ..> TransportCompany : uses
+MainWindow ..> Tour : uses
+MainWindow ..> Order : uses
+MainWindow ..> CountryDialog : uses
+MainWindow ..> HotelDialog : uses
+MainWindow ..> TourDialog : uses
+MainWindow ..> BookTourDialog : uses
+MainWindow ..> SearchDialog : uses
+
+FileManager ..> Country : uses
+FileManager ..> Hotel : uses
+FileManager ..> TransportCompany : uses
+FileManager ..> Tour : uses
+FileManager ..> Order : uses
+
+StreamFileManager ..> Country : uses
+StreamFileManager ..> Order : uses
+
+@enduml
