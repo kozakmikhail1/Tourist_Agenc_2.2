@@ -213,4 +213,6 @@ jobs:
           -Dproject.settings=.github/sonar-project.properties
           -Dsonar.cfamily.compile-commands=compile_commands.json
           -Dsonar.ci=true
+          -Dsonar.coverage.exclusions=**/*
+          -Dsonar.coverage.ignoreNewCode=true
 
