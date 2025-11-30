@@ -11,8 +11,8 @@ skinparam arrow {
     HeadSize 6
     HeadStyle 3
 }
-skinparam nodesep 50
-skinparam ranksep 70
+skinparam nodesep 30
+skinparam ranksep 40
 skinparam packagePadding 15
 skinparam packageStyle rectangle
 skinparam roundcorner 0
@@ -316,21 +316,44 @@ package "Dialogs" {
     class CountryDialog {
         -Ui::CountryDialog* ui
         -Country* country_
-        +CountryDialog(parent: QWidget*, country: Country*)
+        +CountryDialog(parent: QWidget*)
         +getCountry() : Country
+        +setCountry(country: Country&)
     }
     
     class HotelDialog {
         -Ui::HotelDialog* ui
         -DataContainer<Country>* countries_
         -Hotel* hotel_
-        -QVector<Room> rooms_
-        +HotelDialog(parent: QWidget*, countries: DataContainer<Country>*, hotel: Hotel*)
+        +HotelDialog(parent: QWidget*, countries: DataContainer<Country>*)
         +getHotel() : Hotel
+        +setHotel(hotel: Hotel&)
+    }
+    
+    class RoomDialog {
+        -unique_ptr<Ui::RoomDialog> ui
+        -Room* room_
+        +RoomDialog(parent: QWidget*, room: Room*)
+        +getRoom() : Room
+    }
+    
+    class CompanyDialog {
+        -unique_ptr<Ui::CompanyDialog> ui
+        -TransportCompany* company_
+        -QVector<TransportSchedule> schedules_
+        +CompanyDialog(parent: QWidget*, company: TransportCompany*)
+        +getCompany() : TransportCompany
+    }
+    
+    class ScheduleDialog {
+        -unique_ptr<Ui::ScheduleDialog> ui
+        -TransportSchedule* schedule_
+        +ScheduleDialog(parent: QWidget*, schedule: TransportSchedule*)
+        +getSchedule() : TransportSchedule
     }
     
     class TourDialog {
-        -Ui::TourDialog* ui
+        -unique_ptr<Ui::TourDialog> ui
         -DataContainer<Country>* countries_
         -DataContainer<Hotel>* hotels_
         -DataContainer<TransportCompany>* companies_
@@ -340,7 +363,7 @@ package "Dialogs" {
     }
     
     class BookTourDialog {
-        -Ui::BookTourDialog* ui
+        -unique_ptr<Ui::BookTourDialog> ui
         -DataContainer<Country>* countries_
         -DataContainer<Hotel>* hotels_
         -DataContainer<TransportCompany>* companies_
@@ -349,7 +372,6 @@ package "Dialogs" {
         +BookTourDialog(parent: QWidget*, countries: DataContainer<Country>*, hotels: DataContainer<Hotel>*, companies: DataContainer<TransportCompany>*, tours: DataContainer<Tour>*)
         +getOrder() : Order
         +setOrder(order: Order&)
-        +setEditMode(editMode: bool)
     }
     
     class SearchDialog {
@@ -357,10 +379,46 @@ package "Dialogs" {
         -DataContainer<Tour>* tours_
         +SearchDialog(parent: QWidget*, tours: DataContainer<Tour>*)
         +search()
-        +updateResultsTable(results: QVector<Tour>&)
+    }
+    
+    struct BookTourUIElements {
+        +QComboBox* countryCombo
+        +QComboBox* transportCombo
+        +QComboBox* scheduleCombo
+        +QComboBox* hotelCombo
+        +QComboBox* roomCombo
+        +QDateEdit* startDateEdit
+        +QDateEdit* endDateEdit
+    }
+    
+    class BookTourCostCalculator {
+        -DataContainer<Hotel>* hotels_
+        -DataContainer<TransportCompany>* companies_
+        -BookTourUIElements uiElements_
+        +calculateTotalCost() : double
+        +calculateTransportCost() : double
+        +calculateHotelCost() : double
+        +calculateNights() : int
+        +getStarMultiplier(stars: int) : double
+        +getCountryMultiplier(country: QString) : double
+    }
+    
+    BookTourCostCalculator *-- BookTourUIElements : uses
+    
+    class TourSetupHelper {
+        -DataContainer<Country>* countries_
+        -DataContainer<Hotel>* hotels_
+        -DataContainer<TransportCompany>* companies_
+        -DataContainer<Tour>* tours_
+        +findExistingTour(tour: Tour&, tourIndex: int&) : bool
+        +setupTransportAndSchedule(...)
+        +setupHotelAndRoom(...)
     }
     
     SearchDialog ..> "DataContainer<T>" : uses
+    BookTourDialog ..> BookTourCostCalculator : uses
+    BookTourDialog ..> TourSetupHelper : uses
+    TourDialog ..> TourSetupHelper : uses
 }
 
 package "MainWindow" {
@@ -372,35 +430,23 @@ package "MainWindow" {
         -DataContainer<Tour> tours_
         -DataContainer<Order> orders_
         -FileManager fileManager_
-        -QNetworkAccessManager* networkManager_
-        -QTimer* currencyTimer_
         -TableManager* tableManager_
         -FilterManager* filterManager_
         -FilterComboUpdater* filterComboUpdater_
         -QMap<QString, Action*> actions_
         +MainWindow(parent: QWidget*)
-        +saveData()
-        +loadData()
-        +updateCountriesTable()
-        +updateHotelsTable()
-        +updateToursTable()
-        +updateOrdersTable()
-        +linkToursWithHotelsAndTransport()
     }
     
     class TableManager {
-        +TableManager()
-        +updateCountriesTable(table: QTableWidget*, countries: DataContainer<Country>&)
-        +updateHotelsTable(table: QTableWidget*, hotels: DataContainer<Hotel>&)
-        +updateTransportCompaniesTable(table: QTableWidget*, companies: DataContainer<TransportCompany>&)
-        +updateToursTable(table: QTableWidget*, tours: DataContainer<Tour>&)
-        +updateOrdersTable(table: QTableWidget*, orders: DataContainer<Order>&)
-        +getSelectedRow(table: QTableWidget*) : int
-        +getSelectedIndex(table: QTableWidget*, column: int) : int
+        +updateCountriesTable(...)
+        +updateHotelsTable(...)
+        +updateTransportCompaniesTable(...)
+        +updateToursTable(...)
+        +updateOrdersTable(...)
+        +getSelectedRow(...) : int
     }
     
     class FilterManager {
-        +FilterManager()
         +applyCountriesFilters(...)
         +applyHotelsFilters(...)
         +applyTransportFilters(...)
@@ -409,7 +455,6 @@ package "MainWindow" {
     }
     
     class FilterComboUpdater {
-        +FilterComboUpdater()
         +updateCountriesFilterCombo(...)
         +updateHotelsFilterCombos(...)
         +updateTransportFilterCombo(...)
@@ -429,60 +474,154 @@ package "Actions" {
     abstract class Action {
         +Action(parent: QObject*)
         +{abstract} execute()
-        +undo()
         +{abstract} description() : QString
-        +executed() : signal
     }
     
+    ' Country Actions
     class AddCountryAction {
-        -DataContainer<Country>* countries_
-        -QTableWidget* table_
-        -QWidget* parent_
-        +AddCountryAction(countries: DataContainer<Country>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    class EditCountryAction {
+        +execute()
+        +description() : QString
+    }
+    class DeleteCountryAction {
+        +execute()
+        +description() : QString
+    }
+    class ShowCountryInfoAction {
+        +execute()
+        +description() : QString
+    }
+    class RefreshCountriesAction {
         +execute()
         +description() : QString
     }
     
+    ' Hotel Actions
     class AddHotelAction {
-        -DataContainer<Hotel>* hotels_
-        -QTableWidget* table_
-        -QWidget* parent_
-        +AddHotelAction(hotels: DataContainer<Hotel>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    class EditHotelAction {
+        +execute()
+        +description() : QString
+    }
+    class DeleteHotelAction {
+        +execute()
+        +description() : QString
+    }
+    class ShowHotelInfoAction {
+        +execute()
+        +description() : QString
+    }
+    class RefreshHotelsAction {
         +execute()
         +description() : QString
     }
     
+    ' Transport Actions
+    class AddTransportCompanyAction {
+        +execute()
+        +description() : QString
+    }
+    class EditTransportCompanyAction {
+        +execute()
+        +description() : QString
+    }
+    class DeleteTransportCompanyAction {
+        +execute()
+        +description() : QString
+    }
+    class ShowTransportCompanyInfoAction {
+        +execute()
+        +description() : QString
+    }
+    class RefreshTransportCompaniesAction {
+        +execute()
+        +description() : QString
+    }
+    
+    ' Tour Actions
     class AddTourAction {
-        -DataContainer<Tour>* tours_
-        -DataContainer<Country>* countries_
-        -DataContainer<Hotel>* hotels_
-        -DataContainer<TransportCompany>* companies_
-        -QTableWidget* table_
-        -QWidget* parent_
-        +AddTourAction(tours: DataContainer<Tour>*, countries: DataContainer<Country>*, hotels: DataContainer<Hotel>*, companies: DataContainer<TransportCompany>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    class EditTourAction {
+        +execute()
+        +description() : QString
+    }
+    class DeleteTourAction {
+        +execute()
+        +description() : QString
+    }
+    class ShowTourInfoAction {
+        +execute()
+        +description() : QString
+    }
+    class SearchToursAction {
+        +execute()
+        +description() : QString
+    }
+    class RefreshToursAction {
         +execute()
         +description() : QString
     }
     
+    ' Order Actions
     class AddOrderAction {
-        -DataContainer<Order>* orders_
-        -DataContainer<Tour>* tours_
-        -QTableWidget* table_
-        -QWidget* parent_
-        +AddOrderAction(orders: DataContainer<Order>*, tours: DataContainer<Tour>*, table: QTableWidget*, parent: QWidget*)
+        +execute()
+        +description() : QString
+    }
+    class EditOrderAction {
+        +execute()
+        +description() : QString
+    }
+    class ProcessOrderAction {
+        +execute()
+        +description() : QString
+    }
+    class DeleteOrderAction {
+        +execute()
+        +description() : QString
+    }
+    class ShowOrderInfoAction {
+        +execute()
+        +description() : QString
+    }
+    class RefreshOrdersAction {
         +execute()
         +description() : QString
     }
     
     Action <|-- AddCountryAction
+    Action <|-- EditCountryAction
+    Action <|-- DeleteCountryAction
+    Action <|-- ShowCountryInfoAction
+    Action <|-- RefreshCountriesAction
     Action <|-- AddHotelAction
+    Action <|-- EditHotelAction
+    Action <|-- DeleteHotelAction
+    Action <|-- ShowHotelInfoAction
+    Action <|-- RefreshHotelsAction
+    Action <|-- AddTransportCompanyAction
+    Action <|-- EditTransportCompanyAction
+    Action <|-- DeleteTransportCompanyAction
+    Action <|-- ShowTransportCompanyInfoAction
+    Action <|-- RefreshTransportCompaniesAction
     Action <|-- AddTourAction
+    Action <|-- EditTourAction
+    Action <|-- DeleteTourAction
+    Action <|-- ShowTourInfoAction
+    Action <|-- SearchToursAction
+    Action <|-- RefreshToursAction
     Action <|-- AddOrderAction
-    
-    AddCountryAction ..> "DataContainer<T>" : uses
-    AddHotelAction ..> "DataContainer<T>" : uses
-    AddTourAction ..> "DataContainer<T>" : uses
-    AddOrderAction ..> "DataContainer<T>" : uses
+    Action <|-- EditOrderAction
+    Action <|-- ProcessOrderAction
+    Action <|-- DeleteOrderAction
+    Action <|-- ShowOrderInfoAction
+    Action <|-- RefreshOrdersAction
 }
 
 MainWindow ..> "DataContainer<T>" : uses
@@ -493,6 +632,9 @@ MainWindow ..> Tour : uses
 MainWindow ..> Order : uses
 MainWindow ..> CountryDialog : uses
 MainWindow ..> HotelDialog : uses
+MainWindow ..> RoomDialog : uses
+MainWindow ..> CompanyDialog : uses
+MainWindow ..> ScheduleDialog : uses
 MainWindow ..> TourDialog : uses
 MainWindow ..> BookTourDialog : uses
 MainWindow ..> SearchDialog : uses

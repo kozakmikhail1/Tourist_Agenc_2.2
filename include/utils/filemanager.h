@@ -8,6 +8,7 @@
 #include "models/tour.h"
 #include "models/order.h"
 #include <QString>
+#include <QFile>
 #include <QTextStream>
 #include <exception>
 

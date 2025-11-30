@@ -1,6 +1,7 @@
 #include "utils/filemanager.h"
 #include <QFile>
 #include <QTextStream>
+#include <QStringConverter>
 #include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -42,7 +43,10 @@ void FileManager::validateFileHeader(QTextStream& in, const QString& expectedHea
 }
 
 void FileManager::saveCountries(const DataContainer<Country>& countries, const QString& filename) const {
-    QTextStream out = openFileForWriting(filename);
+    QFile file;
+    openFileForWriting(file, filename);
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Encoding::Utf8);
 
     out << "COUNTRIES\n";
     out << countries.size() << "\n";
@@ -56,7 +60,10 @@ void FileManager::saveCountries(const DataContainer<Country>& countries, const Q
 }
 
 void FileManager::loadCountries(DataContainer<Country>& countries, const QString& filename) const {
-    QTextStream in = openFileForReading(filename);
+    QFile file;
+    openFileForReading(file, filename);
+    QTextStream in(&file);
+    in.setEncoding(QStringConverter::Encoding::Utf8);
     validateFileHeader(in, "COUNTRIES");
 
     int count = in.readLine().toInt();
@@ -88,7 +95,10 @@ void FileManager::loadCountries(DataContainer<Country>& countries, const QString
 }
 
 void FileManager::saveHotels(const DataContainer<Hotel>& hotels, const QString& filename) const {
-    QTextStream out = openFileForWriting(filename);
+    QFile file;
+    openFileForWriting(file, filename);
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Encoding::Utf8);
 
     out << "HOTELS\n";
     out << hotels.size() << "\n";
@@ -99,7 +109,10 @@ void FileManager::saveHotels(const DataContainer<Hotel>& hotels, const QString& 
 }
 
 void FileManager::loadHotels(DataContainer<Hotel>& hotels, const QString& filename) const {
-    QTextStream in = openFileForReading(filename);
+    QFile file;
+    openFileForReading(file, filename);
+    QTextStream in(&file);
+    in.setEncoding(QStringConverter::Encoding::Utf8);
     validateFileHeader(in, "HOTELS");
 
     int count = in.readLine().toInt();
@@ -161,7 +174,10 @@ void FileManager::loadHotels(DataContainer<Hotel>& hotels, const QString& filena
 }
 
 void FileManager::saveTransportCompanies(const DataContainer<TransportCompany>& companies, const QString& filename) const {
-    QTextStream out = openFileForWriting(filename);
+    QFile file;
+    openFileForWriting(file, filename);
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Encoding::Utf8);
 
     out << "TRANSPORT_COMPANIES\n";
     out << companies.size() << "\n";
@@ -172,7 +188,10 @@ void FileManager::saveTransportCompanies(const DataContainer<TransportCompany>& 
 }
 
 void FileManager::loadTransportCompanies(DataContainer<TransportCompany>& companies, const QString& filename) const {
-    QTextStream in = openFileForReading(filename);
+    QFile file;
+    openFileForReading(file, filename);
+    QTextStream in(&file);
+    in.setEncoding(QStringConverter::Encoding::Utf8);
     validateFileHeader(in, "TRANSPORT_COMPANIES");
 
     int count = in.readLine().toInt();
@@ -186,7 +205,10 @@ void FileManager::loadTransportCompanies(DataContainer<TransportCompany>& compan
 }
 
 void FileManager::saveTours(const DataContainer<Tour>& tours, const QString& filename) const {
-    QTextStream out = openFileForWriting(filename);
+    QFile file;
+    openFileForWriting(file, filename);
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Encoding::Utf8);
 
     out << "TOURS\n";
     out << tours.size() << "\n";
@@ -209,7 +231,10 @@ void FileManager::saveTours(const DataContainer<Tour>& tours, const QString& fil
 }
 
 void FileManager::loadTours(DataContainer<Tour>& tours, const QString& filename) const {
-    QTextStream in = openFileForReading(filename);
+    QFile file;
+    openFileForReading(file, filename);
+    QTextStream in(&file);
+    in.setEncoding(QStringConverter::Encoding::Utf8);
     validateFileHeader(in, "TOURS");
 
     int count = in.readLine().toInt();
@@ -267,7 +292,10 @@ void FileManager::loadTours(DataContainer<Tour>& tours, const QString& filename)
 }
 
 void FileManager::saveOrders(const DataContainer<Order>& orders, const QString& filename) const {
-    QTextStream out = openFileForWriting(filename);
+    QFile file;
+    openFileForWriting(file, filename);
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Encoding::Utf8);
 
     out << "ORDERS\n";
     out << orders.size() << "\n";
@@ -302,7 +330,10 @@ void FileManager::saveOrders(const DataContainer<Order>& orders, const QString& 
 }
 
 void FileManager::loadOrders(DataContainer<Order>& orders, const QString& filename) const {
-    QTextStream in = openFileForReading(filename);
+    QFile file;
+    openFileForReading(file, filename);
+    QTextStream in(&file);
+    in.setEncoding(QStringConverter::Encoding::Utf8);
     validateFileHeader(in, "ORDERS");
 
     int count = in.readLine().toInt();
