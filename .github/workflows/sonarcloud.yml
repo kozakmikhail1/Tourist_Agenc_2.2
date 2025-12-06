@@ -5,7 +5,7 @@ on:
     branches: [ main, master, develop ]
   pull_request:
     branches: [ main, master, develop ]
-  workflow_dispatch:  # Позволяет запускать вручную
+  workflow_dispatch: 
 
 jobs:
   sonarcloud:
@@ -16,7 +16,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Shallow clones should be disabled for better analysis
+        fetch-depth: 0 
         
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
