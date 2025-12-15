@@ -41,16 +41,16 @@
 TouristAgenc_2.2/
 ├── include/                    # Заголовочные файлы (.h)
 │   ├── models/               # Модели данных
-│   │   ├── Country.h
-│   │   ├── Hotel.h
-│   │   ├── TransportCompany.h
-│   │   ├── Tour.h
-│   │   └── Order.h
+│   │   ├── country.h
+│   │   ├── hotel.h
+│   │   ├── transport_сompany.h
+│   │   ├── tour.h
+│   │   └── order.h
 │   ├── containers/           # Контейнеры и итераторы
-│   │   ├── DataContainer.h
-│   │   └── ContainerIterator.h
+│   │   ├── dataContainer.h
+│   │   └── iterator.h
 │   ├── utils/                # Утилиты
-│   │   ├── FileManager.h
+│   │   ├── filemanager.h
 │   │   └── exceptions/
 │   ├── dialogs/              # Диалоговые окна
 │   └── mainwindow/           # Главное окно
