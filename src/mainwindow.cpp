@@ -128,7 +128,7 @@ void MainWindow::setupUI() {
     ui->addTourButton->setIcon(style()->standardIcon(QStyle::SP_FileDialogNewFolder));
     ui->addOrderButton->setIcon(style()->standardIcon(QStyle::SP_FileDialogNewFolder));
     
-    // Подключение поиска и фильтрации для стран
+    // Подключение поиска и фильтрации для
     connect(ui->searchCountryEdit, &QLineEdit::textChanged, this, &MainWindow::applyCountriesFilters);
     connect(ui->filterCountryCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), 
             this, &MainWindow::applyCountriesFilters);
