@@ -38,30 +38,30 @@
 
 ## 📁 Структура проекта
 
--TouristAgenc_2.2/
--├── include/                    # Заголовочные файлы (.h)
--│   ├── models/               # Модели данных
--│   │   ├── country.h
--│   │   ├── hotel.h
--│   │   ├── transport_сompany.h
--│   │   ├── tour.h
--│   │   └── order.h
--│   ├── containers/           # Контейнеры и итераторы
--│   │   ├── dataContainer.h
--│   │   └── iterator.h
--│   ├── utils/                # Утилиты
--│   │   ├── filemanager.h
--│   │   └── exceptions/
--│   ├── dialogs/              # Диалоговые окна
--│   └── mainwindow/           # Главное окно
--├── src/                      # Исходные файлы (.cpp)
--│   ├── models/              # Реализация моделей
--│   ├── containers/          # Реализация контейнеров
--│   ├── utils/               # Реализация утилит
--│   ├── dialogs/             # Реализация диалогов
--│   └── main.cpp             # Точка входа
--├── data/                     # Файлы данных (автосоздание)
--└── CMakeLists.txt           # Конфигурация сборки
+- TouristAgenc_2.2/
+- ├── include/                    # Заголовочные файлы (.h)
+- │   ├── models/               # Модели данных
+- │   │   ├── country.h
+- │   │   ├── hotel.h
+- │   │   ├── transport_сompany.h
+- │   │   ├── tour.h
+- │   │   └── order.h
+- │   ├── containers/           # Контейнеры и итераторы
+- │   │   ├── dataContainer.h
+- │   │   └── iterator.h
+- │   ├── utils/                # Утилиты
+- │   │   ├── filemanager.h
+- │   │   └── exceptions/
+- │   ├── dialogs/              # Диалоговые окна
+- │   └── mainwindow/           # Главное окно
+- ├── src/                      # Исходные файлы (.cpp)
+- │   ├── models/              # Реализация моделей
+- │   ├── containers/          # Реализация контейнеров
+- │   ├── utils/               # Реализация утилит
+- │   ├── dialogs/             # Реализация диалогов
+- │   └── main.cpp             # Точка входа
+- ├── data/                     # Файлы данных (автосоздание)
+- └── CMakeLists.txt           # Конфигурация сборки
 
 ## ⚙️ Техническая реализация
 ### Реализованные темы курса
