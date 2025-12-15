@@ -48,17 +48,17 @@ TouristAgenc_2.2/
 │   ├── containers/          # Контейнеры и итераторы  
 │   │   ├── dataContainer.h  
 │   │   └── iterator.h  
-│   ├── utils/                # Утилиты\
-│   │   ├── filemanager.h\
-│   │   └── exceptions/\
-│   ├── dialogs/              # Диалоговые окна\
-│   └── mainwindow/           # Главное окно\
-├── src/                      # Исходные файлы (.cpp)\
-│   ├── models/              # Реализация моделей\
-│   ├── containers/          # Реализация контейнеров\
-│   ├── utils/               # Реализация утилит<br>
-│   ├── dialogs/             # Реализация диалогов<br>
-│   └── main.cpp             # Точка входа<br>
+│   ├── utils/                # Утилиты
+│   │   ├── filemanager.h
+│   │   └── exceptions/
+│   ├── dialogs/              # Диалоговые окна
+│   └── mainwindow/           # Главное окно
+├── src/                      # Исходные файлы (.cpp)
+│   ├── models/              # Реализация моделей
+│   ├── containers/          # Реализация контейнеров
+│   ├── utils/               # Реализация утилит
+│   ├── dialogs/             # Реализация диалогов
+│   └── main.cpp             # Точка входа
 ├── data/                     # Файлы данных (автосоздание)
 └── CMakeLists.txt           # Конфигурация сборки
 
