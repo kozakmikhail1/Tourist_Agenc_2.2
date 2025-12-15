@@ -38,8 +38,8 @@
 
 ## 📁 Структура проекта
 TouristAgenc_2.2/  
-├── include/                  # Заголовочные файлы (.h)  
-│   ├── models/               # Модели данных  
+├── include/                  # Заголовочные файлы (.h)/
+│   ├── models/               # Модели данных/
 │   │   ├── country.h  
 │   │   ├── hotel.h  
 │   │   ├── transport_сompany.h  
