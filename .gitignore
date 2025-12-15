@@ -1,4 +1,6 @@
 build/
 out/
-.vs/
-
+.vscode/
+.txt
+.user
+.json
