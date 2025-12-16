@@ -37,7 +37,6 @@ QString TransportCompany::transportTypeToString(TransportType type) {
 }
 
 TransportCompany::TransportType TransportCompany::stringToTransportType(const QString& str) {
-    // Поддержка русского языка
     if (str == "Самолет" || str == "Airplane") return TransportType::Airplane;
     if (str == "Автобус" || str == "Bus") return TransportType::Bus;
     if (str == "Поезд" || str == "Train") return TransportType::Train;

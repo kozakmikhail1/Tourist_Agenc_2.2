@@ -9,9 +9,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class ScheduleDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::ScheduleDialog находится в ui_scheduledialog.h
-
 class ScheduleDialog : public QDialog {
     Q_OBJECT
 
@@ -29,7 +26,7 @@ private:
     TransportSchedule* schedule_;
 };
 
-#endif // SCHEDULEDIALOG_H
+#endif
 
 
 

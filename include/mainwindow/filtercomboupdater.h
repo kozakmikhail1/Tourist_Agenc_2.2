@@ -12,7 +12,6 @@ QT_BEGIN_NAMESPACE
 class QComboBox;
 QT_END_NAMESPACE
 
-// Вспомогательный класс для обновления комбо-боксов фильтров
 class FilterComboUpdater {
 public:
     FilterComboUpdater();
@@ -30,6 +29,6 @@ public:
     void updateOrdersFilterCombo(QComboBox* statusCombo);
 };
 
-#endif // FILTERCOMBOUPDATER_H
+#endif
 
 

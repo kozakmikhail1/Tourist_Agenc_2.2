@@ -10,7 +10,6 @@ QT_BEGIN_NAMESPACE
 class QTableWidget;
 QT_END_NAMESPACE
 
-// Класс-оператор для добавления транспортной компании
 class AddTransportCompanyAction : public Action {
     Q_OBJECT
 
@@ -25,7 +24,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для редактирования транспортной компании
 class EditTransportCompanyAction : public Action {
     Q_OBJECT
 
@@ -40,7 +38,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для удаления транспортной компании
 class DeleteTransportCompanyAction : public Action {
     Q_OBJECT
 
@@ -55,7 +52,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для показа информации о транспортной компании
 class ShowTransportCompanyInfoAction : public Action {
     Q_OBJECT
 
@@ -70,7 +66,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для обновления таблицы транспортных компаний
 class RefreshTransportCompaniesAction : public Action {
     Q_OBJECT
 
@@ -84,6 +79,6 @@ private:
     QTableWidget* table_;
 };
 
-#endif // TRANSPORTACTIONS_H
+#endif
 
 

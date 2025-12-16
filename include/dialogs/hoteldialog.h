@@ -12,9 +12,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class HotelDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::HotelDialog находится в ui_hoteldialog.h
-
 class HotelDialog : public QDialog {
     Q_OBJECT
 
@@ -41,7 +38,7 @@ private:
     void updateRoomsTable();
 };
 
-#endif // HOTELDIALOG_H
+#endif
 
 
 

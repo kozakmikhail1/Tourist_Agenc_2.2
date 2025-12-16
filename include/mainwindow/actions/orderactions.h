@@ -10,7 +10,6 @@ QT_BEGIN_NAMESPACE
 class QTableWidget;
 QT_END_NAMESPACE
 
-// Класс-оператор для добавления заказа
 class AddOrderAction : public Action {
     Q_OBJECT
 
@@ -28,7 +27,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для редактирования заказа
 class EditOrderAction : public Action {
     Q_OBJECT
 
@@ -46,7 +44,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для обработки заказа
 class ProcessOrderAction : public Action {
     Q_OBJECT
 
@@ -61,7 +58,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для удаления заказа
 class DeleteOrderAction : public Action {
     Q_OBJECT
 
@@ -76,7 +72,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для показа информации о заказе
 class ShowOrderInfoAction : public Action {
     Q_OBJECT
 
@@ -91,7 +86,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для обновления таблицы заказов
 class RefreshOrdersAction : public Action {
     Q_OBJECT
 
@@ -105,6 +99,6 @@ private:
     QTableWidget* table_;
 };
 
-#endif // ORDERACTIONS_H
+#endif
 
 

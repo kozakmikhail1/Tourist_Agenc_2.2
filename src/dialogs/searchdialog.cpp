@@ -12,7 +12,6 @@ SearchDialog::SearchDialog(QWidget *parent, DataContainer<Tour>* tours)
 {
     ui->setupUi(this);
     
-    // Устанавливаем начальное состояние всех фильтров в "Не применять" (нейтральное)
     ui->countryFilterCombo->setCurrentIndex(0);
     ui->costFilterCombo->setCurrentIndex(0);
     ui->durationFilterCombo->setCurrentIndex(0);
@@ -21,7 +20,6 @@ SearchDialog::SearchDialog(QWidget *parent, DataContainer<Tour>* tours)
     connect(ui->resultsTable, &QTableWidget::itemDoubleClicked, 
             this, &SearchDialog::onResultSelected);
     
-    // Подключаем кнопку закрытия
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
@@ -34,14 +32,12 @@ void SearchDialog::search() {
     double maxCost = ui->maxCostSpin->value();
     int minDuration = ui->minDurationSpin->value();
     
-    // Получаем состояние каждого фильтра (0 - не применять, 1 - фильтровать, 2 - исключить)
     int countryFilterState = ui->countryFilterCombo->currentIndex();
     int costFilterState = ui->costFilterCombo->currentIndex();
     int durationFilterState = ui->durationFilterCombo->currentIndex();
     
     QVector<Tour> results;
     
-    // Используем STL алгоритмы для поиска
     std::copy_if(tours_->getData().begin(), tours_->getData().end(),
                  std::back_inserter(results),
                  [this, countryFilter, maxCost, minDuration, countryFilterState, costFilterState, durationFilterState](const Tour& tour) {
@@ -49,7 +45,6 @@ void SearchDialog::search() {
                                 countryFilterState, costFilterState, durationFilterState);
     });
     
-    // Сортировка по стоимости (используя STL) - по возрастанию
     std::sort(results.begin(), results.end(),
               [](const Tour& a, const Tour& b) {
         return a.calculateCost() < b.calculateCost();
@@ -61,49 +56,42 @@ void SearchDialog::search() {
 bool SearchDialog::matchesTourFilter(const Tour& tour, const QString& countryFilter, double maxCost,
                                      int minDuration, int countryFilterState, int costFilterState,
                                      int durationFilterState) const {
-    // Фильтр по стране
-    if (countryFilterState == 1) { // Фильтровать
+    if (countryFilterState == 1) {
         if (countryFilter.isEmpty() || 
             !tour.getCountry().contains(countryFilter, Qt::CaseInsensitive)) {
             return false;
         }
-    } else if (countryFilterState == 2) { // Исключить
+    } else if (countryFilterState == 2) {
         if (!countryFilter.isEmpty() && 
             tour.getCountry().contains(countryFilter, Qt::CaseInsensitive)) {
             return false;
         }
     }
-    // Если countryFilterState == 0 (не применять), пропускаем этот фильтр
     
-    // Фильтр по стоимости
-    if (costFilterState == 1) { // Фильтровать
+    if (costFilterState == 1) {
         if (tour.calculateCost() > maxCost) {
             return false;
         }
-    } else if (costFilterState == 2) { // Исключить
+    } else if (costFilterState == 2) {
         if (tour.calculateCost() <= maxCost) {
             return false;
         }
     }
-    // Если costFilterState == 0 (не применять), пропускаем этот фильтр
     
-    // Фильтр по продолжительности
-    if (durationFilterState == 1) { // Фильтровать
+    if (durationFilterState == 1) {
         if (tour.getDuration() < minDuration) {
             return false;
         }
-    } else if (durationFilterState == 2) { // Исключить
+    } else if (durationFilterState == 2) {
         if (tour.getDuration() >= minDuration) {
             return false;
         }
     }
-    // Если durationFilterState == 0 (не применять), пропускаем этот фильтр
     
     return true;
 }
 
 void SearchDialog::updateResultsTable(const QVector<Tour>& results) {
-    // Временно отключаем сортировку
     ui->resultsTable->setSortingEnabled(false);
     
     ui->resultsTable->setRowCount(results.size());
@@ -117,7 +105,6 @@ void SearchDialog::updateResultsTable(const QVector<Tour>& results) {
         ui->resultsTable->setItem(row, 3, 
             new QTableWidgetItem(tour.getEndDate().toString("yyyy-MM-dd")));
         
-        // Для правильной числовой сортировки используем NumericSortItem
         double cost = tour.calculateCost();
         NumericSortItem* costItem = new NumericSortItem(QString::number(cost, 'f', 2) + " руб", cost);
         costItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -125,12 +112,10 @@ void SearchDialog::updateResultsTable(const QVector<Tour>& results) {
         ++row;
     }
     
-    // Включаем сортировку и сортируем по стоимости по умолчанию
     ui->resultsTable->setSortingEnabled(true);
-    ui->resultsTable->sortItems(4, Qt::AscendingOrder); // Сортировка по столбцу стоимости
+    ui->resultsTable->sortItems(4, Qt::AscendingOrder);
 }
 
 void SearchDialog::onResultSelected() {
-    // Можно добавить функционал для детального просмотра тура
 }
 

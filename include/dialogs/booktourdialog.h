@@ -18,9 +18,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class BookTourDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::BookTourDialog находится в ui_booktourdialog.h
-
 struct TransportSchedule;
 
 class BookTourDialog : public QDialog {
@@ -35,8 +32,8 @@ public:
     ~BookTourDialog();
     
     Order getOrder() const;
-    void setOrder(const Order& order);  // Установка данных заказа для редактирования
-    void setEditMode(bool editMode = true);  // Установка режима редактирования
+    void setOrder(const Order& order);
+    void setEditMode(bool editMode = true);
 
 private slots:
     void accept() override;
@@ -63,7 +60,7 @@ private:
     DataContainer<Hotel>* hotels_;
     DataContainer<TransportCompany>* companies_;
     DataContainer<Tour>* tours_;
-    bool isEditMode_;  // Флаг режима редактирования
+    bool isEditMode_;
     
     void updateTransportCombo();
     void updateHotelsCombo();
@@ -71,7 +68,6 @@ private:
     void updateToursCombo();
     void updateUIForMode();
     
-    // Вспомогательные методы
     QString findCountryCapital(const QString& selectedCountry) const;
     QSet<QString> collectCitiesInCountry(const QString& selectedCountry) const;
     TransportCompany* findSelectedTransportCompany() const;
@@ -86,10 +82,9 @@ private:
     void setupTourTransport(Tour& tour) const;
     Tour getTourFromCreateMode() const;
     
-    // Вспомогательные классы для уменьшения количества методов
     std::unique_ptr<BookTourCostCalculator> costCalculator_;
     std::unique_ptr<TourSetupHelper> tourSetupHelper_;
 };
 
-#endif // BOOKTOURDIALOG_H
+#endif
 

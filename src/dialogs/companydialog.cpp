@@ -12,7 +12,6 @@ CompanyDialog::CompanyDialog(QWidget *parent, TransportCompany* company)
 {
     ui->setupUi(this);
     
-    // Заполняем комбо-бокс типов транспорта
     ui->typeCombo->addItems({"Самолет", "Автобус", "Поезд", "Корабль"});
     
     if (company_) {
@@ -29,7 +28,6 @@ CompanyDialog::CompanyDialog(QWidget *parent, TransportCompany* company)
     connect(ui->editScheduleButton, &QPushButton::clicked, this, &CompanyDialog::editSchedule);
     connect(ui->deleteScheduleButton, &QPushButton::clicked, this, &CompanyDialog::deleteSchedule);
     
-    // Подключаем кнопки диалога
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CompanyDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CompanyDialog::reject);
 }

@@ -7,8 +7,6 @@
 #include <algorithm>
 #include <iterator>
 
-// Шаблонный контейнер для хранения данных
-// Демонстрирует: шаблоны классов, контейнеры, итераторы, STL алгоритмы
 template<typename T>
 class DataContainer {
 public:
@@ -63,7 +61,6 @@ public:
     QVector<T>& getData() { return data_; }
     const QVector<T>& getData() const { return data_; }
 
-    // Поиск по условию (используя STL алгоритмы)
     template<typename Predicate>
     Iterator findIf(Predicate pred) {
         auto it = std::find_if(data_.begin(), data_.end(), pred);
@@ -76,7 +73,6 @@ public:
         return ConstIterator(it);
     }
     
-    // Удаление по условию (используя STL алгоритмы)
     template<typename Predicate>
     bool removeIf(Predicate pred) {
         auto it = std::find_if(data_.begin(), data_.end(), pred);
@@ -92,7 +88,7 @@ private:
     QVector<T> data_;
 };
 
-#endif // DATACONTAINER_H
+#endif
 
 
 

@@ -138,8 +138,6 @@ void FileManager::loadHotels(DataContainer<Hotel>& hotels, const QString& filena
         QString starsStr = in.readLine().trimmed();
         int stars = starsStr.toInt(&ok);
         if (!ok || stars < 1 || stars > 7) {
-            // Если не удалось прочитать звезды, значит структура файла нарушена
-            // Возможно, это название номера вместо звезд - значит у предыдущего отеля неправильное количество номеров
             throw FileException(QString("Invalid stars for hotel at index %1: '%2' (expected number 1-7, got '%3'). This usually means the previous hotel has incorrect room count.")
                 .arg(i).arg(hotelName).arg(starsStr));
         }
@@ -219,13 +217,10 @@ void FileManager::saveTours(const DataContainer<Tour>& tours, const QString& fil
         out << tour.getStartDate().toString(Qt::ISODate) << "\n";
         out << tour.getEndDate().toString(Qt::ISODate) << "\n";
         
-        // Сохраняем отель
         saveHotelToStream(out, tour.getHotel());
         
-        // Сохраняем транспортную компанию
         saveTransportCompanyToStream(out, tour.getTransportCompany());
         
-        // Сохраняем выбранный рейс
         saveScheduleToStream(out, tour.getTransportSchedule());
     }
 }
@@ -248,13 +243,8 @@ void FileManager::loadTours(DataContainer<Tour>& tours, const QString& filename)
             QString startDateStr = in.readLine().trimmed();
             QString endDateStr = in.readLine().trimmed();
             
-            // Проверяем, что данные не пустые
             if (name.isEmpty() || country.isEmpty()) {
                 qWarning() << "Skipping tour at index" << i << "- empty name or country";
-                // Пропускаем все оставшиеся поля этого тура
-                // Старый формат: 0 дополнительных полей
-                // Новый формат: отель (5 + номера*4) + транспорт (3 + рейсы*5) + выбранный рейс (5)
-                // Невозможно точно определить, поэтому просто пропускаем
                 continue;
             }
         
@@ -271,15 +261,12 @@ void FileManager::loadTours(DataContainer<Tour>& tours, const QString& filename)
             tour.setEndDate(endDate);
         }
         
-        // Загружаем отель
         Hotel hotel = loadHotelFromStream(in);
         tour.setHotel(hotel);
         
-        // Загружаем транспортную компанию
         TransportCompany transport = loadTransportCompanyFromStream(in);
         tour.setTransportCompany(transport);
         
-        // Загружаем выбранный рейс
         TransportSchedule selectedSchedule = loadScheduleFromStream(in);
         tour.setTransportSchedule(selectedSchedule);
         
@@ -301,30 +288,24 @@ void FileManager::saveOrders(const DataContainer<Order>& orders, const QString& 
     out << orders.size() << "\n";
 
     for (const auto& order : orders.getData()) {
-        // Сохраняем информацию о клиенте СНАЧАЛА
         out << order.getClientName() << "\n";
         out << order.getClientPhone() << "\n";
-        out << order.getClientEmail() << "\n";  // Email
-        out << "2" << "\n";  // Количество людей (пока заглушка)
+        out << order.getClientEmail() << "\n";
+        out << "2" << "\n";
         out << order.getOrderDate().date().toString(Qt::ISODate) << "\n";
         
-        // Сохраняем полную информацию о туре
         const Tour& tour = order.getTour();
         out << tour.getName() << "\n";
         out << tour.getCountry() << "\n";
         out << tour.getStartDate().toString(Qt::ISODate) << "\n";
         out << tour.getEndDate().toString(Qt::ISODate) << "\n";
         
-        // Сохраняем отель
         saveHotelToStream(out, tour.getHotel());
         
-        // Сохраняем транспортную компанию
         saveTransportCompanyToStream(out, tour.getTransportCompany());
         
-        // Сохраняем выбранный рейс
         saveScheduleToStream(out, tour.getTransportSchedule());
 
-        // Сохраняем состояние заказа
         out << order.getStatus() << "\n";
     }
 }
@@ -341,14 +322,12 @@ void FileManager::loadOrders(DataContainer<Order>& orders, const QString& filena
 
     for (int i = 0; i < count; ++i) {
         try {
-            // Загружаем данные заказа
             QString clientName = in.readLine().trimmed();
             QString clientPhone = in.readLine().trimmed();
             QString clientEmail = in.readLine().trimmed();
             int peopleCount = in.readLine().toInt();
             QDate orderDate = QDate::fromString(in.readLine().trimmed(), Qt::ISODate);
             
-            // Загружаем тур
             Tour tour;
             QString tourName = in.readLine().trimmed();
             QString tourCountry = in.readLine().trimmed();
@@ -360,19 +339,15 @@ void FileManager::loadOrders(DataContainer<Order>& orders, const QString& filena
             tour.setStartDate(startDate);
             tour.setEndDate(endDate);
             
-            // Загружаем отель
             Hotel hotel = loadHotelFromStream(in);
             tour.setHotel(hotel);
             
-            // Загружаем транспортную компанию
             TransportCompany transport = loadTransportCompanyFromStream(in);
             tour.setTransportCompany(transport);
             
-            // Загружаем выбранный рейс
             TransportSchedule selectedSchedule = loadScheduleFromStream(in);
             tour.setTransportSchedule(selectedSchedule);
             
-            // Создаем заказ
             Order order;
             order.setTour(tour);
             order.setClientName(clientName);
@@ -509,7 +484,6 @@ QString FileManager::determineOrderStatus(QTextStream& in, int orderIndex, int t
     return defaultStatus;
 }
 
-// Вспомогательные функции для сохранения
 void FileManager::saveHotelToStream(QTextStream& out, const Hotel& hotel) const {
     out << hotel.getName() << "\n";
     out << hotel.getCountry() << "\n";
@@ -548,7 +522,6 @@ void FileManager::saveScheduleToStream(QTextStream& out, const TransportSchedule
     out << schedule.availableSeats << "\n";
 }
 
-// Вспомогательные функции для загрузки
 Hotel FileManager::loadHotelFromStream(QTextStream& in) const {
     Hotel hotel;
     QString hotelName = in.readLine().trimmed();

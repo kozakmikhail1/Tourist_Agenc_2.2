@@ -15,5 +15,3 @@ void TouristService::readFromStream(std::istream& is) {
     is >> name >> price_;
     name_ = QString::fromStdString(name);
 }
-
-// Операторы теперь hidden friends, определены в заголовочном файле

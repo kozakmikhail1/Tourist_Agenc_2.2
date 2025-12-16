@@ -20,7 +20,6 @@ TourDialog::TourDialog(QWidget *parent,
 {
     ui->setupUi(this);
     
-    // СНАЧАЛА подключаем сигналы, чтобы они срабатывали при заполнении комбо-боксов
     connect(ui->countryCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &TourDialog::onCountryChanged);
     connect(ui->hotelCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -43,7 +42,6 @@ TourDialog::TourDialog(QWidget *parent,
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TourDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &TourDialog::reject);
     
-    // Теперь заполняем комбо-боксы
     if (countries_) {
         for (const auto& country : countries_->getData()) {
             ui->countryCombo->addItem(country.getName());
@@ -54,7 +52,6 @@ TourDialog::TourDialog(QWidget *parent,
     updateTransportCombo();
     updateSchedulesCombo();
     
-    // Устанавливаем даты по умолчанию
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate().addDays(7));
     
@@ -70,7 +67,6 @@ TourDialog::TourDialog(QWidget *parent,
         index = ui->hotelCombo->findText(tour_->getHotel().getName());
         if (index >= 0) {
             ui->hotelCombo->setCurrentIndex(index);
-            // Явно вызываем updateRoomsCombo() после программной установки отеля
             updateRoomsCombo();
         }
         
@@ -206,7 +202,6 @@ void TourDialog::calculateCost() {
     double hotelCost = calculateHotelCost();
     int nights = tempTour.getDuration();
     
-    // Форматируем вывод стоимости с разбивкой
     QString costText = QString("<b style='font-size: 16pt; color: #0066cc;'>%1 руб</b>")
         .arg(totalCost, 0, 'f', 2);
     
@@ -244,7 +239,6 @@ Hotel TourDialog::getSelectedHotel(const QString& country) const {
         }
         
         Hotel hotelCopy = hotel;
-        // Очищаем номера и добавляем только выбранный
         while (hotelCopy.getRoomCount() > 0) {
             hotelCopy.removeRoom(0);
         }
@@ -314,14 +308,12 @@ Tour TourDialog::getTour() const {
     tour.setStartDate(ui->startDateEdit->date());
     tour.setEndDate(ui->endDateEdit->date());
     
-    // Находим отель и выбранный номер
     QString selectedCountry = ui->countryCombo->currentText();
     Hotel hotel = getSelectedHotel(selectedCountry);
     if (!hotel.getName().isEmpty()) {
         tour.setHotel(hotel);
     }
     
-    // Находим транспортную компанию и выбранный рейс
     setupTourTransport(tour, selectedCountry);
     
     return tour;
@@ -361,8 +353,7 @@ void TourDialog::accept() {
 
 void TourDialog::onCountryChanged() {
     updateTransportCombo();
-    updateHotelsCombo();  // updateHotelsCombo() уже очищает и обновляет roomCombo
-    // Обновляем список расписаний, если транспорт уже выбран
+    updateHotelsCombo();
     if (ui->transportCombo->currentIndex() >= 0) {
         updateSchedulesCombo();
     }
@@ -370,8 +361,6 @@ void TourDialog::onCountryChanged() {
 }
 
 void TourDialog::onHotelChanged() {
-    // Всегда обновляем список номеров при изменении отеля
-    // Этот метод вызывается при изменении индекса в комбо-боксе отелей
     updateRoomsCombo();
     calculateCost();
 }
@@ -382,7 +371,6 @@ void TourDialog::onTransportChanged() {
 }
 
 void TourDialog::updateHotelsCombo() {
-    // Используем ту же простую логику, что и в BookTourDialog (которая работает)
     ui->hotelCombo->clear();
     ui->roomCombo->clear();
     
@@ -395,14 +383,10 @@ void TourDialog::updateHotelsCombo() {
         }
     }
     
-    // После заполнения списка отелей, если список не пуст, выбираем первый отель
-    // и обновляем список номеров (как это работает в BookTourDialog)
     if (ui->hotelCombo->count() > 0) {
-        // Блокируем сигналы при программной установке, чтобы избежать двойного вызова
         ui->hotelCombo->blockSignals(true);
         ui->hotelCombo->setCurrentIndex(0);
         ui->hotelCombo->blockSignals(false);
-        // Обновляем список номеров для первого отеля
         updateRoomsCombo();
     }
 }
@@ -410,7 +394,6 @@ void TourDialog::updateHotelsCombo() {
 void TourDialog::updateRoomsCombo() {
     ui->roomCombo->clear();
     
-    // Используем ту же простую логику, что и в BookTourDialog (которая работает)
     if (!hotels_ || ui->hotelCombo->currentIndex() < 0) return;
     
     QString selectedCountry = ui->countryCombo->currentText();
@@ -459,7 +442,6 @@ void TourDialog::updateTransportCombo() {
         return;
     }
     
-    // Если страна не выбрана, показываем все компании
     if (!countries_ || ui->countryCombo->currentIndex() < 0) {
         for (const auto& company : companies_->getData()) {
             ui->transportCombo->addItem(company.getName());
@@ -475,7 +457,6 @@ void TourDialog::updateTransportCombo() {
         citiesInCountry.insert(capital);
     }
     
-    // Показываем только транспортные компании, которые имеют рейсы в выбранную страну
     for (const auto& company : companies_->getData()) {
         if (hasRelevantScheduleForCountry(company, citiesInCountry, capital)) {
             ui->transportCombo->addItem(company.getName());
@@ -496,7 +477,6 @@ void TourDialog::populateScheduleCombo(TransportCompany* company,
             continue;
         }
         
-        // Если страна выбрана, фильтруем рейсы по городам назначения
         bool shouldInclude = citiesInCountry.isEmpty();
         if (!shouldInclude) {
             QString arrivalCity = schedule->arrivalCity;
@@ -537,7 +517,6 @@ void TourDialog::updateSchedulesCombo() {
         }
     }
     
-    // Находим выбранную транспортную компанию
     TransportCompany* company = findSelectedTransportCompany();
     populateScheduleCombo(company, citiesInCountry, capital);
 }

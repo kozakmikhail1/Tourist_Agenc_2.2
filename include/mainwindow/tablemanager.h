@@ -13,7 +13,6 @@ QT_BEGIN_NAMESPACE
 class QTableWidget;
 QT_END_NAMESPACE
 
-// Вспомогательный класс для управления таблицами
 class TableManager {
 public:
     TableManager();
@@ -28,6 +27,6 @@ public:
     int getSelectedIndex(QTableWidget* table, int column) const;
 };
 
-#endif // TABLEMANAGER_H
+#endif
 
 

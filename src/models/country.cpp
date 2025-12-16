@@ -10,7 +10,6 @@ QString Country::getDescription() const {
         .arg(getName(), continent_, capital_);
 }
 
-// Перегрузка оператора присваивания
 Country& Country::operator=(const Country& other) {
     if (this != &other) {
         setName(other.getName());
@@ -22,9 +21,6 @@ Country& Country::operator=(const Country& other) {
     return *this;
 }
 
-// Операторы теперь hidden friends, определены в заголовочном файле
-
-// Работа с файлами через потоки
 void Country::writeToFile(std::ofstream& ofs) const {
     ofs << "COUNTRY\n";
     ofs << getName().toStdString() << "\n";
@@ -35,7 +31,7 @@ void Country::writeToFile(std::ofstream& ofs) const {
 
 void Country::readFromFile(std::ifstream& ifs) {
     std::string line;
-    std::getline(ifs, line); // Пропускаем заголовок "COUNTRY"
+    std::getline(ifs, line);
     
     std::string name;
     std::string continent;

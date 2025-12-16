@@ -8,8 +8,6 @@
 #include <iostream>
 #include <fstream>
 
-// Заказ на туристические услуги
-// Демонстрирует: перегрузку операций, работу с файлами
 class Order {
 public:
     Order();
@@ -39,7 +37,6 @@ public:
     
     QString toString() const;
     
-    // Перегрузка операторов сравнения
     friend bool operator==(const Order& lhs, const Order& rhs) {
         return lhs.id_ == rhs.id_;
     }
@@ -48,11 +45,10 @@ public:
         return !(lhs == rhs);
     }
     
-    friend bool operator<(const Order& lhs, const Order& rhs) { // для сортировки по стоимости
+    friend bool operator<(const Order& lhs, const Order& rhs) {
         return lhs.getTotalCost() < rhs.getTotalCost();
     }
     
-    // Hidden friend операторы для работы с потоками
     friend std::ostream& operator<<(std::ostream& os, const Order& order) {
         os << order.id_ << "\n";
         os << order.tour_.getName().toStdString() << "\n";
@@ -84,7 +80,6 @@ public:
         return is;
     }
     
-    // Работа с файлами через потоки
     void writeToFile(std::ofstream& ofs) const;
     void readFromFile(std::ifstream& ifs);
 
@@ -99,7 +94,7 @@ private:
     QString status_ = "В обработке";
 };
 
-#endif // ORDER_H
+#endif
 
 
 

@@ -23,7 +23,6 @@ BookTourDialog::BookTourDialog(QWidget *parent,
 {
     ui->setupUi(this);
     
-    // Инициализируем costCalculator после setupUi, так как нужны указатели на UI элементы
     BookTourUIElements uiElements = {
         ui->countryCombo, ui->transportCombo, ui->scheduleCombo,
         ui->hotelCombo, ui->roomCombo, ui->startDateEdit, ui->endDateEdit
@@ -31,25 +30,20 @@ BookTourDialog::BookTourDialog(QWidget *parent,
     costCalculator_ = std::make_unique<BookTourCostCalculator>(hotels, companies, uiElements);
     setWindowTitle("Бронирование тура");
     
-    // Заполняем страны
     if (countries_) {
         for (const auto& country : countries_->getData()) {
             ui->countryCombo->addItem(country.getName());
         }
     }
     
-    // Заполняем туры
     updateToursCombo();
     
-    // Устанавливаем даты по умолчанию
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate().addDays(7));
     
-    // Подключаем сигналы режимов
     connect(ui->selectTourRadio, &QRadioButton::toggled, this, &BookTourDialog::onModeChanged);
     connect(ui->createTourRadio, &QRadioButton::toggled, this, &BookTourDialog::onModeChanged);
     
-    // Подключаем сигналы для создания тура
     connect(ui->countryCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &BookTourDialog::onCountryChanged);
     connect(ui->transportCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -68,15 +62,12 @@ BookTourDialog::BookTourDialog(QWidget *parent,
     });
     connect(ui->endDateEdit, &QDateEdit::dateChanged, this, &BookTourDialog::onDatesChanged);
     
-    // Подключаем сигналы для выбора тура
     connect(ui->tourCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &BookTourDialog::calculateCost);
     
-    // Подключаем кнопки диалога
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &BookTourDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &BookTourDialog::reject);
     
-    // Инициализация
     updateTransportCombo();
     updateHotelsCombo();
     updateUIForMode();
@@ -88,7 +79,6 @@ BookTourDialog::~BookTourDialog() = default;
 void BookTourDialog::onCountryChanged() {
     updateTransportCombo();
     updateHotelsCombo();
-    // Обновляем список расписаний, если транспорт уже выбран
     if (ui->transportCombo->currentIndex() >= 0) {
         onTransportChanged();
     }
@@ -166,7 +156,6 @@ void BookTourDialog::populateScheduleCombo(TransportCompany* company, const QSet
             continue;
         }
         
-        // Если страна выбрана, фильтруем рейсы по городам назначения
         bool shouldInclude = true;
         if (!citiesInCountry.isEmpty()) {
             QString arrivalCity = schedule->arrivalCity;
@@ -195,7 +184,6 @@ void BookTourDialog::onTransportChanged() {
         return;
     }
     
-    // Получаем список городов выбранной страны для фильтрации рейсов
     QSet<QString> citiesInCountry;
     QString capital = "";
     
@@ -209,7 +197,6 @@ void BookTourDialog::onTransportChanged() {
         }
     }
     
-    // Находим выбранную транспортную компанию и заполняем расписание
     TransportCompany* company = findSelectedTransportCompany();
     populateScheduleCombo(company, citiesInCountry, capital);
     
@@ -249,7 +236,6 @@ void BookTourDialog::onModeChanged() {
 void BookTourDialog::updateUIForMode() {
     bool isCreateMode = ui->createTourRadio->isChecked();
     
-    // Показываем/скрываем виджеты в зависимости от режима
     ui->createTourWidget->setVisible(isCreateMode);
     ui->selectTourWidget->setVisible(!isCreateMode);
 }
@@ -260,7 +246,6 @@ void BookTourDialog::updateTransportCombo() {
     
     if (!companies_) return;
     
-    // Если страна не выбрана, показываем все компании с рейсами
     if (!countries_ || ui->countryCombo->currentIndex() < 0) {
         for (const auto& company : companies_->getData()) {
             if (company.getScheduleCount() > 0) {
@@ -270,23 +255,18 @@ void BookTourDialog::updateTransportCombo() {
         return;
     }
     
-    // Получаем выбранную страну и её столицу
     QString selectedCountry = ui->countryCombo->currentText();
     QString capital = findCountryCapital(selectedCountry);
     QSet<QString> citiesInCountry = collectCitiesInCountry(selectedCountry);
     
-    // Добавляем столицу в список городов
     if (!capital.isEmpty()) {
         citiesInCountry.insert(capital);
     }
     
-    // Показываем только транспортные компании, которые имеют рейсы в выбранную страну
     for (const auto& company : companies_->getData()) {
         if (company.getScheduleCount() > 0) {
-            // Проверяем, есть ли у компании рейсы в города выбранной страны
             bool hasRelevantSchedule = false;
             for (const auto& schedule : company.getSchedules()) {
-                // Проверяем, идет ли рейс в столицу или в город из списка отелей
                 QString arrivalCity = schedule.arrivalCity;
                 if (citiesInCountry.contains(arrivalCity) || 
                     (!capital.isEmpty() && arrivalCity.contains(capital, Qt::CaseInsensitive))) {
@@ -378,7 +358,6 @@ void BookTourDialog::calculateCostForCreateMode() {
     double transportCost = costCalculator_->calculateTransportCost();
     double hotelCost = costCalculator_->calculateHotelCost();
     
-    // Форматируем вывод стоимости
     QString costText = QString("<b style='font-size: 14pt; color: #2196F3;'>%1 руб</b>")
         .arg(totalCost, 0, 'f', 2);
     
@@ -505,39 +484,32 @@ void BookTourDialog::setupCreateMode(const Tour& tour, const QString& clientName
     ui->selectTourRadio->setChecked(false);
     updateUIForMode();
     
-    // Временно блокируем все сигналы
     ui->countryCombo->blockSignals(true);
     ui->transportCombo->blockSignals(true);
     ui->hotelCombo->blockSignals(true);
     ui->scheduleCombo->blockSignals(true);
     ui->roomCombo->blockSignals(true);
     
-    // Устанавливаем страну
     int countryIndex = ui->countryCombo->findText(tour.getCountry());
     if (countryIndex >= 0) {
         ui->countryCombo->setCurrentIndex(countryIndex);
     }
     
-    // Обновляем комбо-боксы после выбора страны
     updateTransportCombo();
     updateHotelsCombo();
     
-    // Устанавливаем даты
     ui->startDateEdit->setDate(tour.getStartDate());
     ui->endDateEdit->setDate(tour.getEndDate());
     
-    // Устанавливаем транспорт и отель
     setupTransportAndSchedule(tour);
     setupHotelAndRoom(tour);
     
-    // Разблокируем все сигналы
     ui->countryCombo->blockSignals(false);
     ui->transportCombo->blockSignals(false);
     ui->hotelCombo->blockSignals(false);
     ui->scheduleCombo->blockSignals(false);
     ui->roomCombo->blockSignals(false);
     
-    // Устанавливаем данные клиента
     ui->clientNameEdit->setText(clientName);
     ui->clientPhoneEdit->setText(clientPhone);
     ui->clientEmailEdit->setText(clientEmail);
@@ -567,7 +539,6 @@ void BookTourDialog::setOrder(const Order& order) {
     QString clientPhone = order.getClientPhone();
     QString clientEmail = order.getClientEmail();
     
-    // Пытаемся найти тур в списке готовых туров
     int tourIndex = -1;
     if (findExistingTour(tour, tourIndex)) {
         setupSelectMode(tourIndex, clientName, clientPhone, clientEmail);
@@ -575,7 +546,6 @@ void BookTourDialog::setOrder(const Order& order) {
         setupCreateMode(tour, clientName, clientPhone, clientEmail);
     }
     
-    // Пересчитываем стоимость
     calculateCost();
 }
 
@@ -608,13 +578,11 @@ Tour BookTourDialog::getTourFromCreateMode() const {
     QString tourName = QString("Тур в %1").arg(country);
     Tour tour(tourName, country, startDate, endDate);
     
-    // Устанавливаем отель
     Hotel hotel = getSelectedHotel(country);
     if (!hotel.getName().isEmpty()) {
         tour.setHotel(hotel);
     }
     
-    // Устанавливаем транспорт
     setupTourTransport(tour);
     
     return tour;

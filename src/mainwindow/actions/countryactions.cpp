@@ -20,7 +20,6 @@ void AddCountryAction::execute() {
     if (dialog.exec() == QDialog::Accepted) {
         Country country = dialog.getCountry();
         countries_->add(country);
-        // Обновление таблицы будет выполнено через сигнал/слот или напрямую
         emit executed();
     }
 }

@@ -9,7 +9,6 @@
 #include <QDate>
 #include <memory>
 
-// Третий уровень наследования - Тур (комплексная услуга)
 class Tour : public TouristService {
 public:
     explicit Tour(const QString& name = "", const QString& country = "", 
@@ -50,7 +49,7 @@ private:
     TransportSchedule transportSchedule_;
 };
 
-#endif // TOUR_H
+#endif
 
 
 

@@ -12,7 +12,6 @@ HotelDialog::HotelDialog(QWidget *parent, DataContainer<Country>* countries, Hot
 {
     ui->setupUi(this);
     
-    // Заполняем комбо-бокс стран
     if (countries_) {
         for (const auto& country : countries_->getData()) {
             ui->countryCombo->addItem(country.getName());
@@ -35,7 +34,6 @@ HotelDialog::HotelDialog(QWidget *parent, DataContainer<Country>* countries, Hot
     connect(ui->editRoomButton, &QPushButton::clicked, this, &HotelDialog::editRoom);
     connect(ui->deleteRoomButton, &QPushButton::clicked, this, &HotelDialog::deleteRoom);
     
-    // Подключаем кнопки диалога
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &HotelDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &HotelDialog::reject);
 }

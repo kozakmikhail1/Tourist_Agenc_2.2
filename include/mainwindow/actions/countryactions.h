@@ -10,7 +10,6 @@ QT_BEGIN_NAMESPACE
 class QTableWidget;
 QT_END_NAMESPACE
 
-// Класс-оператор для добавления страны
 class AddCountryAction : public Action {
     Q_OBJECT
 
@@ -25,7 +24,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для редактирования страны
 class EditCountryAction : public Action {
     Q_OBJECT
 
@@ -40,7 +38,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для удаления страны
 class DeleteCountryAction : public Action {
     Q_OBJECT
 
@@ -55,7 +52,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для показа информации о стране
 class ShowCountryInfoAction : public Action {
     Q_OBJECT
 
@@ -70,7 +66,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для обновления таблицы стран
 class RefreshCountriesAction : public Action {
     Q_OBJECT
 
@@ -80,6 +75,6 @@ public:
     QString description() const override { return "Обновить список стран"; }
 };
 
-#endif // COUNTRYACTIONS_H
+#endif
 
 

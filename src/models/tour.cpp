@@ -16,13 +16,10 @@ QString Tour::getDescription() const {
 double Tour::calculateCost() const {
     double totalCost = 0.0;
     
-    // Стоимость транспорта
     totalCost += transportSchedule_.price;
     
-    // Стоимость отеля (цена за ночь * количество ночей)
     int nights = getDuration();
     if (nights > 0 && hotel_.getRoomCount() > 0) {
-        // Берем цену первого номера (в реальности можно выбрать конкретный номер)
         auto rooms = hotel_.getRooms();
         if (!rooms.isEmpty()) {
             totalCost += rooms.first().getPricePerNight() * nights;

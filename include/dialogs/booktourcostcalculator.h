@@ -13,7 +13,6 @@ class QComboBox;
 class QDateEdit;
 QT_END_NAMESPACE
 
-// Структура для группировки UI элементов
 struct BookTourUIElements {
     QComboBox* countryCombo;
     QComboBox* transportCombo;
@@ -24,7 +23,6 @@ struct BookTourUIElements {
     QDateEdit* endDateEdit;
 };
 
-// Вспомогательный класс для расчета стоимости тура
 class BookTourCostCalculator {
 public:
     BookTourCostCalculator(DataContainer<Hotel>* hotels,
@@ -44,6 +42,6 @@ private:
     BookTourUIElements uiElements_;
 };
 
-#endif // BOOKTOURCOSTCALCULATOR_H
+#endif
 
 

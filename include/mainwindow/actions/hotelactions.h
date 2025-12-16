@@ -10,7 +10,6 @@ QT_BEGIN_NAMESPACE
 class QTableWidget;
 QT_END_NAMESPACE
 
-// Класс-оператор для добавления отеля
 class AddHotelAction : public Action {
     Q_OBJECT
 
@@ -25,7 +24,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для редактирования отеля
 class EditHotelAction : public Action {
     Q_OBJECT
 
@@ -40,7 +38,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для удаления отеля
 class DeleteHotelAction : public Action {
     Q_OBJECT
 
@@ -55,7 +52,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для показа информации об отеле
 class ShowHotelInfoAction : public Action {
     Q_OBJECT
 
@@ -70,7 +66,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для обновления таблицы отелей
 class RefreshHotelsAction : public Action {
     Q_OBJECT
 
@@ -84,6 +79,6 @@ private:
     QTableWidget* table_;
 };
 
-#endif // HOTELACTIONS_H
+#endif
 
 

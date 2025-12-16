@@ -9,7 +9,6 @@ RoomDialog::RoomDialog(QWidget *parent, Room* room)
 {
     ui->setupUi(this);
     
-    // Заполняем комбо-бокс типов номеров
     ui->typeCombo->addItems({"Single", "Double", "Suite", "Apartment"});
     
     if (room_) {
@@ -19,7 +18,6 @@ RoomDialog::RoomDialog(QWidget *parent, Room* room)
         ui->capacitySpin->setValue(room_->getCapacity());
     }
     
-    // Подключаем кнопки диалога
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &RoomDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &RoomDialog::reject);
 }

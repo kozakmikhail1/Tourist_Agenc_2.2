@@ -9,9 +9,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class CompanyDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::CompanyDialog находится в ui_companydialog.h
-
 class CompanyDialog : public QDialog {
     Q_OBJECT
 
@@ -35,7 +32,7 @@ private:
     void updateSchedulesTable();
 };
 
-#endif // COMPANYDIALOG_H
+#endif
 
 
 

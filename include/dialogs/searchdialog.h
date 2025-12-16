@@ -10,9 +10,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class SearchDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::SearchDialog находится в ui_searchdialog.h
-
 class SearchDialog : public QDialog {
     Q_OBJECT
 
@@ -35,7 +32,7 @@ private:
                           int durationFilterState) const;
 };
 
-#endif // SEARCHDIALOG_H
+#endif
 
 
 

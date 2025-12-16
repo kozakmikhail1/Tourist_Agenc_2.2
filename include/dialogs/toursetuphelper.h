@@ -12,7 +12,6 @@ class QComboBox;
 class QLineEdit;
 QT_END_NAMESPACE
 
-// Вспомогательный класс для настройки тура в диалоге
 class TourSetupHelper {
 public:
     TourSetupHelper(DataContainer<Country>* countries,
@@ -38,7 +37,6 @@ public:
                            QComboBox* transportCombo,
                            QComboBox* scheduleCombo) const;
     
-    // Публичные методы для использования в других классах
     QString findCountryCapital(const QString& selectedCountry) const;
     QSet<QString> collectCitiesInCountry(const QString& selectedCountry) const;
 
@@ -55,6 +53,6 @@ private:
     int findScheduleComboIndex(QComboBox* scheduleCombo, int scheduleIndex) const;
 };
 
-#endif // TOURSETUPHELPER_H
+#endif
 
 

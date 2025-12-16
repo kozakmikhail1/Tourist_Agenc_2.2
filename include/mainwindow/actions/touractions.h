@@ -10,7 +10,6 @@ QT_BEGIN_NAMESPACE
 class QTableWidget;
 QT_END_NAMESPACE
 
-// Класс-оператор для добавления тура
 class AddTourAction : public Action {
     Q_OBJECT
 
@@ -32,7 +31,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для редактирования тура
 class EditTourAction : public Action {
     Q_OBJECT
 
@@ -54,7 +52,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для удаления тура
 class DeleteTourAction : public Action {
     Q_OBJECT
 
@@ -69,7 +66,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для показа информации о туре
 class ShowTourInfoAction : public Action {
     Q_OBJECT
 
@@ -84,7 +80,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для поиска туров
 class SearchToursAction : public Action {
     Q_OBJECT
 
@@ -98,7 +93,6 @@ private:
     QWidget* parent_;
 };
 
-// Класс-оператор для обновления таблицы туров
 class RefreshToursAction : public Action {
     Q_OBJECT
 
@@ -112,6 +106,6 @@ private:
     QTableWidget* table_;
 };
 
-#endif // TOURACTIONS_H
+#endif
 
 

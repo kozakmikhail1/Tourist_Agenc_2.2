@@ -9,9 +9,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class RoomDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::RoomDialog находится в ui_roomdialog.h
-
 class RoomDialog : public QDialog {
     Q_OBJECT
 
@@ -29,7 +26,7 @@ private:
     Room* room_;
 };
 
-#endif // ROOMDIALOG_H
+#endif
 
 
 

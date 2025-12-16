@@ -7,7 +7,6 @@
 #include <QVector>
 #include <memory>
 
-// Второй уровень наследования - Отель
 class Hotel : public TouristService {
 public:
     explicit Hotel(const QString& name = "", const QString& country = "", 
@@ -40,7 +39,7 @@ private:
     QVector<Room> rooms_;
 };
 
-#endif // HOTEL_H
+#endif
 
 
 

@@ -4,8 +4,6 @@
 #include <iterator>
 #include <QVector>
 
-// Кастомный итератор для контейнера
-// Демонстрирует: перегрузку операций для итераторов
 template<typename T>
 class ContainerIterator {
 public:
@@ -100,7 +98,6 @@ private:
     typename QVector<T>::iterator ptr_;
 };
 
-// Специализация для const итератора - использует общие операторы через наследование
 template<typename T>
 class ContainerIterator<const T> {
 public:
@@ -170,7 +167,7 @@ private:
     typename QVector<T>::const_iterator ptr_;
 };
 
-#endif // ITERATOR_H
+#endif
 
 
 

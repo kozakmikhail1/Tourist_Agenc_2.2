@@ -4,7 +4,6 @@
 #include "models/touristservice.h"
 #include <QString>
 
-// Второй уровень наследования - Номер в отеле
 class Room : public TouristService {
 public:
     enum class RoomType {
@@ -38,7 +37,7 @@ private:
     double pricePerNight_;
 };
 
-#endif // ROOM_H
+#endif
 
 
 

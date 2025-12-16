@@ -10,7 +10,6 @@ ScheduleDialog::ScheduleDialog(QWidget *parent, TransportSchedule* schedule)
 {
     ui->setupUi(this);
     
-    // Устанавливаем даты по умолчанию
     ui->departureDateEdit->setDate(QDate::currentDate());
     ui->arrivalDateEdit->setDate(QDate::currentDate().addDays(1));
     
@@ -23,11 +22,9 @@ ScheduleDialog::ScheduleDialog(QWidget *parent, TransportSchedule* schedule)
         ui->seatsSpin->setValue(schedule_->availableSeats);
     }
     
-    // Подключаем кнопки диалога
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ScheduleDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &ScheduleDialog::reject);
     
-    // Проверка дат
     connect(ui->departureDateEdit, &QDateEdit::dateChanged, this, [this]() {
         if (ui->departureDateEdit->date() > ui->arrivalDateEdit->date()) {
             ui->arrivalDateEdit->setDate(ui->departureDateEdit->date().addDays(1));

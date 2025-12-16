@@ -46,7 +46,6 @@ void StreamFileManager::loadCountries(DataContainer<Country>& countries,
     std::ifstream ifs(filename, std::ios::in);
     
     if (!ifs.is_open()) {
-        // Файл не существует - это нормально при первой загрузке
         return;
     }
     
@@ -60,7 +59,7 @@ void StreamFileManager::loadCountries(DataContainer<Country>& countries,
         
         int count;
         ifs >> count;
-        ifs.ignore(); // Пропускаем символ новой строки
+        ifs.ignore();
         
         countries.clear();
         
@@ -105,7 +104,6 @@ void StreamFileManager::loadOrders(DataContainer<Order>& orders,
     std::ifstream ifs(filename, std::ios::in);
     
     if (!ifs.is_open()) {
-        // Файл не существует - это нормально при первой загрузке
         return;
     }
     
@@ -119,7 +117,7 @@ void StreamFileManager::loadOrders(DataContainer<Order>& orders,
         
         int count;
         ifs >> count;
-        ifs.ignore(); // Пропускаем символ новой строки
+        ifs.ignore();
         
         orders.clear();
         
@@ -155,7 +153,6 @@ void StreamFileManager::loadAll(DataContainer<Country>& countries,
         loadCountries(countries, path + "/countries_stream.txt");
         loadOrders(orders, path + "/orders_stream.txt");
     } catch (const StreamFileException& e) {
-        // Игнорируем ошибки при первой загрузке
         std::cerr << "Warning: " << e.what() << std::endl;
     }
 }

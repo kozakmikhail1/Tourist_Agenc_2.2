@@ -14,9 +14,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class TourDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::TourDialog находится в ui_tourdialog.h
-
 class TourDialog : public QDialog {
     Q_OBJECT
 
@@ -50,16 +47,13 @@ private:
     void updateTransportCombo();
     void updateSchedulesCombo();
     
-    // Вспомогательные функции для calculateCost
     double calculateTransportCost() const;
     double calculateHotelCost() const;
     TransportCompany* findSelectedTransportCompany() const;
     
-    // Вспомогательные функции для getTour
     Hotel getSelectedHotel(const QString& country) const;
     void setupTourTransport(Tour& tour, const QString& country) const;
     
-    // Вспомогательные функции для updateTransportCombo и updateSchedulesCombo
     bool hasRelevantScheduleForCountry(const TransportCompany& company, 
                                        const QSet<QString>& citiesInCountry, 
                                        const QString& capital) const;
@@ -68,7 +62,7 @@ private:
                                const QString& capital) const;
 };
 
-#endif // TOURDIALOG_H
+#endif
 
 
 

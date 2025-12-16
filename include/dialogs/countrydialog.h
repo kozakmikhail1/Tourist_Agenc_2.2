@@ -9,9 +9,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class CountryDialog; }
 QT_END_NAMESPACE
 
-// Forward declaration для включения в .cpp
-// Полное определение Ui::CountryDialog находится в ui_countrydialog.h
-
 class CountryDialog : public QDialog {
     Q_OBJECT
 
@@ -29,7 +26,7 @@ private:
     Country* country_;
 };
 
-#endif // COUNTRYDIALOG_H
+#endif
 
 
 

@@ -19,9 +19,6 @@ QString Order::toString() const {
              QString::number(getTotalCost(), 'f', 2), status_);
 }
 
-// Операторы теперь hidden friends, определены в заголовочном файле
-
-// Работа с файлами через потоки
 void Order::writeToFile(std::ofstream& ofs) const {
     ofs << "ORDER\n";
     ofs << id_ << "\n";
@@ -34,7 +31,7 @@ void Order::writeToFile(std::ofstream& ofs) const {
 
 void Order::readFromFile(std::ifstream& ifs) {
     std::string line;
-    std::getline(ifs, line); // Пропускаем заголовок "ORDER"
+    std::getline(ifs, line);
     
     std::string tourName;
     std::string clientName;
@@ -42,7 +39,7 @@ void Order::readFromFile(std::ifstream& ifs) {
     std::string dateStr;
     std::string status;
     ifs >> id_;
-    ifs.ignore(); // Пропускаем символ новой строки
+    ifs.ignore();
     std::getline(ifs, tourName);
     std::getline(ifs, clientName);
     std::getline(ifs, clientPhone);

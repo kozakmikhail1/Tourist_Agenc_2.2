@@ -12,7 +12,6 @@ class QLineEdit;
 class QComboBox;
 QT_END_NAMESPACE
 
-// Вспомогательный класс для управления фильтрацией
 class FilterManager {
 public:
     FilterManager();
@@ -44,6 +43,6 @@ private:
     double extractCostFromItem(QTableWidgetItem* item) const;
 };
 
-#endif // FILTERMANAGER_H
+#endif
 
 

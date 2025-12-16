@@ -16,7 +16,6 @@ CountryDialog::CountryDialog(QWidget *parent, Country* country)
         ui->currencyEdit->setText(country_->getCurrency());
     }
     
-    // Подключаем кнопки диалога
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CountryDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CountryDialog::reject);
 }

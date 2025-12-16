@@ -6,7 +6,6 @@
 #include <QDate>
 #include <QVector>
 
-// Структура для графика перевозок
 struct TransportSchedule {
     QString departureCity;
     QString arrivalCity;
@@ -18,7 +17,6 @@ struct TransportSchedule {
     TransportSchedule() = default;
 };
 
-// Второй уровень наследования - Транспортная компания
 class TransportCompany : public TouristService {
 public:
     enum class TransportType {
@@ -50,7 +48,7 @@ private:
     QVector<TransportSchedule> schedules_;
 };
 
-#endif // TRANSPORTCOMPANY_H
+#endif
 
 
 
