@@ -2,6 +2,5 @@ build/
 out/
 .vscode/
 *.txt
-!data/*.txt
 *.user
 *.json

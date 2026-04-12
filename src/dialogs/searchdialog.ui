@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SearchDialog</class>
+ <widget class="QDialog" name="SearchDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Поиск туров</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="searchGroup">
+     <property name="title">
+      <string>Критерии поиска</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="countryLabel">
+        <property name="text">
+         <string>Страна:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="countryLayout">
+        <item>
+         <widget class="QComboBox" name="countryFilterCombo">
+          <item>
+           <property name="text">
+            <string>Не применять</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Фильтровать</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Исключить</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="countryEdit"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="maxCostLabel">
+        <property name="text">
+         <string>Максимальная стоимость:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="costLayout">
+        <item>
+         <widget class="QComboBox" name="costFilterCombo">
+          <item>
+           <property name="text">
+            <string>Не применять</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Фильтровать</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Исключить</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="maxCostSpin">
+          <property name="maximum">
+           <double>1000000.0</double>
+          </property>
+          <property name="value">
+           <double>1000000.0</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="minDurationLabel">
+        <property name="text">
+         <string>Минимальная продолжительность (дней):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="durationLayout">
+        <item>
+         <widget class="QComboBox" name="durationFilterCombo">
+          <item>
+           <property name="text">
+            <string>Не применять</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Фильтровать</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Исключить</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="minDurationSpin">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>365</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="searchButton">
+     <property name="text">
+      <string>Поиск</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="resultsLabel">
+     <property name="text">
+      <string>Результаты поиска:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="resultsTable">
+     <column>
+      <property name="text">
+       <string>Название</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Страна</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Дата начала</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Дата окончания</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Стоимость</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+
