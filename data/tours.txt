@@ -1,0 +1,29 @@
+# id;country;title;price;days;hotel;hotelAddress;hotelStars;dateStart;dateEnd
+1;Turkey;;45900;7;Hotel Marina;Kemer Cad. 12, Antalya;4;2026-06-01;2026-06-07
+2;Egypt;;62900;10;Pyramids Resort;Giza Plateau Road 3, Cairo;5;2026-05-10;2026-05-19
+3;Greece;;38900;6;Athens View;Plaka 5, Athens;4;2026-07-05;2026-07-10
+4;Spain;;71900;8;Barcelona Central;Rambla 140, Barcelona;4;2026-08-12;2026-08-19
+5;UAE;;98900;6;Dubai Palm;Palm Jumeirah East, Dubai;5;2026-09-01;2026-09-06
+6;Montenegro;;34900;5;Bay Hotel;Budva Riviera 8;3;2026-06-20;2026-06-24
+7;Thailand;;54900;12;Phuket Garden;Patong Beach Road 22;4;2026-11-01;2026-11-12
+8;Cyprus;;41900;7;Aphrodite Beach;Limassol Seafront 9;4;2026-10-03;2026-10-09
+9;Italy;;67500;8;Roma Historic;Via Nazionale 71, Rome;4;2026-04-15;2026-04-22
+10;France;;82300;9;Paris Riverside;Quai de la Seine 4, Paris;4;2026-05-20;2026-05-28
+12;Vietnam;;58700;11;Saigon Pearl;District 1, Ho Chi Minh;4;2026-12-01;2026-12-11
+14;Maldives;;149500;7;Coral Reef Villas;North Male Atoll;5;2026-02-01;2026-02-07
+15;Georgia;;29500;5;Tbilisi Old Town;Shardeni 3, Tbilisi;3;2026-07-18;2026-07-22
+16;Armenia;;28900;5;Yerevan Plaza;Republic Square 1, Yerevan;3;2026-08-05;2026-08-09
+17;Portugal;;69900;8;Lisbon Harbor;Belem waterfront 6, Lisbon;4;2026-09-12;2026-09-19
+18;Czechia;;47200;6;Prague Castle Inn;Mala Strana 10, Prague;4;2026-06-25;2026-06-30
+19;Austria;;73100;7;Vienna Classic;Ringstrasse 55, Vienna;4;2026-10-10;2026-10-16
+20;South Korea;;118000;9;Seoul Modern;Gangnam-daero 411, Seoul;5;2026-04-01;2026-04-09
+21;Croatia;;51200;7;Dubrovnik Walls;Old Town Pile 2;4;2026-07-01;2026-07-07
+22;Morocco;;55800;8;Marrakech Riad;Medina Derb 7, Marrakech;4;2026-11-15;2026-11-22
+24;Norway;;98800;6;Bergen Fjord;Bryggen 14, Bergen;4;2026-08-01;2026-08-06
+25;Switzerland;;112000;7;Alpine Lodge;Grindelwald Dorfstr. 90;5;2026-01-20;2026-01-26
+26;Germany;;54800;5;Munich Oktober;Ludwigstr. 33, Munich;4;2026-09-20;2026-09-24
+27;Netherlands;;49800;6;Amsterdam Canal;Keizersgracht 120;4;2026-05-05;2026-05-10
+28;Poland;;35600;5;Krakow Old Square;Rynek Glowny 5;3;2026-06-10;2026-06-14
+29;Tunisia;;31200;7;Hammamet Beach;Yasmine Hammamet Bd;4;2026-10-25;2026-10-31
+30;Sri Lanka;;67800;10;Colombo Pearl;Galle Face 2, Colombo;4;2026-11-08;2026-11-17
+#checksum_tours 3652945768

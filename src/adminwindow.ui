@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminWindow</class>
+ <widget class="QMainWindow" name="AdminWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Панель администратора</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabUsers">
+       <attribute name="title">
+        <string>Пользователи</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayoutUsers">
+        <item>
+         <widget class="QTableWidget" name="usersTable">
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="userBtnLayout">
+          <item>
+           <widget class="QPushButton" name="addUserButton">
+            <property name="text">
+             <string>Добавить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="editUserButton">
+            <property name="text">
+             <string>Изменить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteUserButton">
+            <property name="text">
+             <string>Удалить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="userBookingsButton">
+            <property name="text">
+             <string>Бронирования пользователя</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabTours">
+       <attribute name="title">
+        <string>Туры</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayoutTours">
+        <item>
+         <layout class="QVBoxLayout" name="adminFilterOuter">
+          <item>
+           <layout class="QHBoxLayout" name="adminFilterLayout">
+            <item>
+             <widget class="QLabel" name="labelC">
+              <property name="text">
+               <string>Страна:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="adminCountryEdit"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelMinP">
+              <property name="text">
+               <string>Цена от (0 — нет):</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="adminMinPriceEdit"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelMaxP">
+              <property name="text">
+               <string>до:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="adminMaxPriceEdit"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="adminFilterButton">
+              <property name="text">
+               <string>Фильтр</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="adminFilterLayout2">
+            <item>
+             <widget class="QLabel" name="labelMinD">
+              <property name="text">
+               <string>Дней от (0 — нет):</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="adminMinDaysEdit"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelMaxD">
+              <property name="text">
+               <string>до:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="adminMaxDaysEdit"/>
+            </item>
+            <item>
+             <spacer name="adminFilterSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="toursTable">
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="tourBtnLayout">
+          <item>
+           <widget class="QPushButton" name="addTourButton">
+            <property name="text">
+             <string>Добавить тур</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="editTourButton">
+            <property name="text">
+             <string>Изменить тур</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteTourButton">
+            <property name="text">
+             <string>Удалить тур</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="tourBookingsButton">
+            <property name="text">
+             <string>Кто забронировал тур</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="logoutLayout">
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="logoutButton">
+        <property name="text">
+         <string>Выйти</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+
